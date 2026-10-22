@@ -1,0 +1,21 @@
+{
+  "id": "gen-1729612346-def456",
+  "provider": "Meta",
+  "model": "meta-llama/llama-3.3-70b-instruct:free",
+  "object": "chat.completion",
+  "created": 1729612346,
+  "choices": [
+    {
+      "logprobs": null,
+      "finish_reason": "stop",
+      "native_finish_reason": "stop",
+      "index": 0,
+      "message": {
+        "role": "assistant",
+        "content": "VOO and SCHD overlap by about 14% (holdings as of 2026-06-30).",
+        "refusal": null
+      }
+    }
+  ],
+  "usage": { "prompt_tokens": 700, "completion_tokens": 30, "total_tokens": 730 }
+}

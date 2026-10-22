@@ -1,0 +1,29 @@
+{
+  "id": "gen-1729612345-abc123",
+  "provider": "Meta",
+  "model": "meta-llama/llama-3.3-70b-instruct:free",
+  "object": "chat.completion",
+  "created": 1729612345,
+  "choices": [
+    {
+      "logprobs": null,
+      "finish_reason": "tool_calls",
+      "native_finish_reason": "tool_calls",
+      "index": 0,
+      "message": {
+        "role": "assistant",
+        "content": "",
+        "refusal": null,
+        "tool_calls": [
+          {
+            "index": 0,
+            "id": "call_abc123",
+            "type": "function",
+            "function": { "name": "compare_funds", "arguments": "{\"tickers\":[\"VOO\",\"SCHD\"]}" }
+          }
+        ]
+      }
+    }
+  ],
+  "usage": { "prompt_tokens": 512, "completion_tokens": 24, "total_tokens": 536 }
+}

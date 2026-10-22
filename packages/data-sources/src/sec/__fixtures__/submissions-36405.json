@@ -1,0 +1,43 @@
+{
+  "cik": "36405",
+  "entityType": "other",
+  "name": "VANGUARD INDEX FUNDS",
+  "filings": {
+    "recent": {
+      "accessionNumber": [
+        "0001752724-26-200003",
+        "0001752724-26-200002",
+        "0000932471-26-000555",
+        "0001752724-26-200001",
+        "0001752724-26-100002",
+        "0001752724-26-100001"
+      ],
+      "filingDate": [
+        "2026-08-28",
+        "2026-08-28",
+        "2026-08-20",
+        "2026-08-27",
+        "2026-05-29",
+        "2026-05-28"
+      ],
+      "reportDate": [
+        "2026-06-30",
+        "2026-06-30",
+        "2026-06-30",
+        "2026-06-30",
+        "2026-03-31",
+        "2026-03-31"
+      ],
+      "form": ["NPORT-P", "NPORT-P", "N-CSRS", "NPORT-P", "NPORT-P", "NPORT-P"],
+      "primaryDocument": [
+        "xslFormNPORT-P_X01/primary_doc.xml",
+        "xslFormNPORT-P_X01/primary_doc.xml",
+        "tm2612345d1_ncsrs.htm",
+        "xslFormNPORT-P_X01/primary_doc.xml",
+        "xslFormNPORT-P_X01/primary_doc.xml",
+        "xslFormNPORT-P_X01/primary_doc.xml"
+      ]
+    },
+    "files": []
+  }
+}

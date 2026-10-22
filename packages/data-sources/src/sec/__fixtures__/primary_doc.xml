@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<edgarSubmission xmlns="http://www.sec.gov/edgar/nport" xmlns:com="http://www.sec.gov/edgar/common" xmlns:ncom="http://www.sec.gov/edgar/nportcommon" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <headerData>
+    <submissionType>NPORT-P</submissionType>
+    <isConfidential>false</isConfidential>
+    <filerInfo>
+      <filer>
+        <issuerCredentials>
+          <cik>0000036405</cik>
+          <ccc>XXXXXXXX</ccc>
+        </issuerCredentials>
+      </filer>
+      <seriesClassInfo>
+        <seriesId>S000002277</seriesId>
+        <classId>C000005951</classId>
+        <classId>C000092055</classId>
+      </seriesClassInfo>
+    </filerInfo>
+  </headerData>
+  <formData>
+    <genInfo>
+      <regName>VANGUARD INDEX FUNDS</regName>
+      <regFileNumber>811-02652</regFileNumber>
+      <regCik>0000036405</regCik>
+      <regLei>549300ZFQBH3Y0V6VG85</regLei>
+      <regStreet1>PO BOX 2600</regStreet1>
+      <regCity>VALLEY FORGE</regCity>
+      <regStateConditional regCountry="US" regState="US-PA"/>
+      <regZipOrPostalCode>19482</regZipOrPostalCode>
+      <regPhone>610-669-1000</regPhone>
+      <seriesName>Vanguard 500 Index Fund</seriesName>
+      <seriesId>S000002277</seriesId>
+      <seriesLei>549300ZJ0PVL9WL8QW71</seriesLei>
+      <repPdEnd>2026-12-31</repPdEnd>
+      <repPdDate>2026-06-30</repPdDate>
+      <isFinalFiling>N</isFinalFiling>
+    </genInfo>
+    <fundInfo>
+      <totAssets>1402345678901.12</totAssets>
+      <totLiabs>2345678901.10</totLiabs>
+      <netAssets>1400000000000.02</netAssets>
+    </fundInfo>
+    <invstOrSecs>
+      <invstOrSec>
+        <name>Apple Inc</name>
+        <lei>HWUPKR0MPOU8FGXBT394</lei>
+        <title>Apple Inc</title>
+        <cusip>037833100</cusip>
+        <identifiers>
+          <isin value="US0378331005"/>
+          <ticker value="AAPL"/>
+        </identifiers>
+        <balance>412345678.00000000</balance>
+        <units>NS</units>
+        <curCd>USD</curCd>
+        <valUSD>98172839012.34</valUSD>
+        <pctVal>7.012345678</pctVal>
+        <payoffProfile>Long</payoffProfile>
+        <assetCat>EC</assetCat>
+        <issuerCat>CORP</issuerCat>
+        <invCountry>US</invCountry>
+        <isRestrictedSec>N</isRestrictedSec>
+        <fairValLevel>1</fairValLevel>
+        <securityLending>
+          <isCashCollateral>N</isCashCollateral>
+          <isNonCashCollateral>N</isNonCashCollateral>
+          <isLoanByFund>N</isLoanByFund>
+        </securityLending>
+      </invstOrSec>
+      <invstOrSec>
+        <name>NVIDIA Corp</name>
+        <lei>549300S4KLFTLO7GSQ80</lei>
+        <title>NVIDIA Corp</title>
+        <cusip>67066G104</cusip>
+        <identifiers>
+          <isin value="US67066G1040"/>
+        </identifiers>
+        <balance>654321000.00000000</balance>
+        <units>NS</units>
+        <curCd>USD</curCd>
+        <valUSD>92000000000.00</valUSD>
+        <pctVal>6.571428571</pctVal>
+        <payoffProfile>Long</payoffProfile>
+        <assetCat>EC</assetCat>
+        <issuerCat>CORP</issuerCat>
+        <invCountry>US</invCountry>
+        <isRestrictedSec>N</isRestrictedSec>
+        <fairValLevel>1</fairValLevel>
+      </invstOrSec>
+      <invstOrSec>
+        <name>Berkshire Hathaway Inc</name>
+        <lei>5493000C01ZX7D35SD85</lei>
+        <title>Berkshire Hathaway Inc Class B</title>
+        <cusip>084670702</cusip>
+        <identifiers>
+          <isin value="US0846707026"/>
+        </identifiers>
+        <balance>21000000.00000000</balance>
+        <units>NS</units>
+        <curCd>USD</curCd>
+        <valUSD>23100000000.00</valUSD>
+        <pctVal>1.65</pctVal>
+        <payoffProfile>Long</payoffProfile>
+        <assetCat>EC</assetCat>
+        <issuerCat>CORP</issuerCat>
+        <invCountry>US</invCountry>
+        <isRestrictedSec>N</isRestrictedSec>
+        <fairValLevel>1</fairValLevel>
+      </invstOrSec>
+      <invstOrSec>
+        <name>United States Treasury Bill</name>
+        <lei>254900HROIFWPRGM1V77</lei>
+        <title>United States Treasury Bill 0% 12/18/2026</title>
+        <cusip>912797QZ3</cusip>
+        <identifiers>
+          <isin value="US912797QZ34"/>
+        </identifiers>
+        <balance>150000000.00000000</balance>
+        <units>PA</units>
+        <curCd>USD</curCd>
+        <valUSD>148500000.00</valUSD>
+        <pctVal>0.0106</pctVal>
+        <payoffProfile>Long</payoffProfile>
+        <assetCat>DBT</assetCat>
+        <issuerCat>UST</issuerCat>
+        <invCountry>US</invCountry>
+        <isRestrictedSec>N</isRestrictedSec>
+        <fairValLevel>2</fairValLevel>
+        <debtSec>
+          <maturityDt>2026-12-18</maturityDt>
+          <couponKind>None</couponKind>
+          <annualizedRt>0</annualizedRt>
+          <isDefault>N</isDefault>
+        </debtSec>
+      </invstOrSec>
+      <invstOrSec>
+        <name>Vanguard Market Liquidity Fund</name>
+        <lei>5493004XHMFXTUA3SB51</lei>
+        <title>Vanguard Market Liquidity Fund</title>
+        <cusip>922906300</cusip>
+        <identifiers>
+          <isin value="US9229063005"/>
+        </identifiers>
+        <balance>4500000.00000000</balance>
+        <units>NS</units>
+        <curCd>USD</curCd>
+        <valUSD>450000000.00</valUSD>
+        <pctVal>0.0321</pctVal>
+        <payoffProfile>Long</payoffProfile>
+        <assetCat>STIV</assetCat>
+        <issuerCat>RF</issuerCat>
+        <invCountry>US</invCountry>
+        <isRestrictedSec>N</isRestrictedSec>
+        <fairValLevel>1</fairValLevel>
+      </invstOrSec>
+      <invstOrSec>
+        <name>E-mini S&amp;P 500 Index</name>
+        <lei>N/A</lei>
+        <title>S&amp;P 500 E-mini Futures Sep26</title>
+        <cusip>000000000</cusip>
+        <identifiers>
+          <other otherDesc="Bloomberg ticker" value="ESU6 Index"/>
+        </identifiers>
+        <balance>1200.00000000</balance>
+        <units>NC</units>
+        <curCd>USD</curCd>
+        <valUSD>-1234567.89</valUSD>
+        <pctVal>-0.0001</pctVal>
+        <payoffProfile>N/A</payoffProfile>
+        <derivCat>FUT</derivCat>
+        <assetConditional assetCat="DE"/>
+        <issuerCat>CORP</issuerCat>
+        <invCountry>US</invCountry>
+        <isRestrictedSec>N</isRestrictedSec>
+        <fairValLevel>1</fairValLevel>
+      </invstOrSec>
+    </invstOrSecs>
+  </formData>
+</edgarSubmission>
