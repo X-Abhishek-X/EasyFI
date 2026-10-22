@@ -19,6 +19,8 @@ import {
   PatchPortfolioRequest,
   PortfolioDto,
   PortfolioListDto,
+  SignUpRequest,
+  SignUpResultDto,
 } from './schemas';
 
 const json = (schema: z.ZodType, description: string) => ({
@@ -33,10 +35,20 @@ const errors = {
 };
 
 type Route = Omit<RouteConfig, 'responses' | 'security'> & {
+  /** Public routes (sign-up) skip the bearer requirement. */
+  public?: boolean;
   ok: { status: 200 | 201 | 204; schema?: z.ZodType; description: string };
 };
 
 const routes: Route[] = [
+  {
+    method: 'post',
+    path: '/auth/sign-up',
+    tags: ['auth'],
+    public: true,
+    request: { body: json(SignUpRequest, 'Invite-gated sign-up') },
+    ok: { status: 201, schema: SignUpResultDto, description: 'Account created; sign in next' },
+  },
   {
     method: 'get',
     path: '/me',
@@ -130,10 +142,10 @@ export function buildOpenApiDocument() {
     description:
       'Supabase access token (Flutter). The web app uses the Supabase SSR cookie instead.',
   });
-  for (const { ok, ...r } of routes) {
+  for (const { ok, public: isPublic, ...r } of routes) {
     registry.registerPath({
       ...r,
-      security: [{ bearer: [] }],
+      security: isPublic ? [] : [{ bearer: [] }],
       responses: {
         [ok.status]: ok.schema ? json(ok.schema, ok.description) : { description: ok.description },
         ...errors,

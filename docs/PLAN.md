@@ -45,7 +45,8 @@ Stop when every box is ticked or only blocked tasks remain.
 - [x] Repositories with user scoping (test: user A cannot read user B's portfolio)
 - [x] `contracts` zod schemas + OpenAPI generation at `/api/v1/openapi.json`
   - Note: M2 endpoints only (me, portfolios, holdings, import); later milestones add their schemas. Request bodies use `z.strictObject` so unknown fields 400. Stale `apps/web/.next/types` from an earlier build can fail typecheck locally — delete `.next`.
-- [ ] Auth middleware: Supabase JWT (Bearer) + SSR cookie; invite-code sign-up gate
+- [x] Auth middleware: Supabase JWT (Bearer) + SSR cookie; invite-code sign-up gate
+  - Note: `services/auth.ts` (Bearer/chunked `sb-*-auth-token` cookie, HS256 secret or Supabase JWKS), `config.ts` (demo mode only outside production; prod without Supabase env throws), `POST /api/v1/auth/sign-up` creates users via the Supabase admin API (`SupabaseAuthAdmin`) so the invite check cannot be bypassed from the browser. `db/migrate.ts` joins the drizzle path at runtime — Turbopack failed on the literal URL.
 - [ ] Error envelope + zod validation helper
 - [ ] Endpoints: `/me`, portfolios CRUD, holdings CRUD, CSV import
 - [ ] Generated typed client package used by web

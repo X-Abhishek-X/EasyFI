@@ -50,6 +50,18 @@ export const PatchMeRequest = z
   })
   .openapi('PatchMe');
 
+// ---------- auth ----------
+export const SignUpRequest = z
+  .strictObject({
+    email: z.email().max(254),
+    password: z.string().min(8).max(72),
+    displayName: z.string().trim().max(80).nullable().optional(),
+    inviteCode: z.string().trim().min(1).max(64),
+  })
+  .openapi('SignUp');
+
+export const SignUpResultDto = z.object({ userId: Uuid }).openapi('SignUpResult');
+
 // ---------- portfolios ----------
 export const PortfolioDto = z
   .object({
@@ -146,6 +158,8 @@ export const ImportResultDto = z
 export const IdParams = z.object({ id: Uuid.openapi({ param: { name: 'id', in: 'path' } }) });
 
 export type MeDto = z.infer<typeof MeDto>;
+export type SignUpRequest = z.infer<typeof SignUpRequest>;
+export type SignUpResultDto = z.infer<typeof SignUpResultDto>;
 export type PatchMeRequest = z.infer<typeof PatchMeRequest>;
 export type PortfolioDto = z.infer<typeof PortfolioDto>;
 export type CreatePortfolioRequest = z.infer<typeof CreatePortfolioRequest>;

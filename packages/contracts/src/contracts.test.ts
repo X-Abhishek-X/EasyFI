@@ -9,6 +9,7 @@ import {
   MeDto,
   PatchMeRequest,
   PortfolioDto,
+  SignUpRequest,
 } from './index';
 
 const uuid = '3f1c2a9e-8b7d-4c6e-9f00-1a2b3c4d5e6f';
@@ -47,6 +48,16 @@ describe('request schemas', () => {
     expect(PatchMeRequest.safeParse({ theme: 'light' }).success).toBe(true);
     expect(PatchMeRequest.safeParse({ theme: 'blue' }).success).toBe(false);
     expect(PatchMeRequest.safeParse({ baseCurrency: 'AED' }).success).toBe(false);
+  });
+});
+
+describe('sign-up', () => {
+  it('requires email, 8+ char password and an invite code', () => {
+    const ok = { email: 'a@b.co', password: 'longenough', inviteCode: 'FRIENDS' };
+    expect(SignUpRequest.safeParse(ok).success).toBe(true);
+    expect(SignUpRequest.safeParse({ ...ok, email: 'nope' }).success).toBe(false);
+    expect(SignUpRequest.safeParse({ ...ok, password: 'short' }).success).toBe(false);
+    expect(SignUpRequest.safeParse({ ...ok, inviteCode: ' ' }).success).toBe(false);
   });
 });
 
@@ -104,6 +115,7 @@ describe('OpenAPI document', () => {
     );
     expect(ops.sort()).toEqual(
       [
+        'POST /auth/sign-up',
         'GET /me',
         'PATCH /me',
         'GET /portfolios',
