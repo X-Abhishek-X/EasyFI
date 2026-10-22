@@ -128,6 +128,8 @@ describe('OpenAPI document', () => {
         'PATCH /holdings/{id}',
         'DELETE /holdings/{id}',
         'POST /portfolios/{id}/import',
+        'GET /securities/search',
+        'GET /securities/{ticker}',
       ].sort(),
     );
   });

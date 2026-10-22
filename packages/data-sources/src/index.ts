@@ -21,6 +21,7 @@ export * from './bls';
 export * from './openrouter';
 export * from './sec/edgar';
 export * from './sec/nport';
+export * from './sec/company-tickers';
 export * from './fakes/prices';
 export * from './fakes/dividends';
 export * from './fakes/holdings';

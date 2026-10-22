@@ -60,7 +60,8 @@ Stop when every box is ticked or only blocked tasks remain.
 - [x] SEC EDGAR N-PORT client: ticker→series lookup, parse holdings XML, map CUSIP→ticker
   - Note: UIT funds (SPY, QQQ, DIA) don't file N-PORT → need seeded holdings.
 - [x] BLS CPI client
-- [ ] Securities search + seed of popular ETFs
+- [x] Securities search + seed of popular ETFs
+  - Note: `services/catalog.ts` (50 popular US ETFs, names only — expense ratios left null until a verified source fills them; seeded on app start, never overwrites). `GET /securities/search` + `/securities/{ticker}`. `data-sources/sec/company-tickers.ts` parses SEC company_tickers.json (~10k stocks) for the nightly job.
 - [ ] Nightly job (spec §9) + `job_runs` table + GitHub Actions cron workflow
 
 ## M4 — Web app: shell, home, portfolio

@@ -19,8 +19,12 @@ import {
   PatchPortfolioRequest,
   PortfolioDto,
   PortfolioListDto,
+  SecurityDto,
+  SecuritySearchDto,
+  SecuritySearchQuery,
   SignUpRequest,
   SignUpResultDto,
+  TickerParams,
 } from './schemas';
 
 const json = (schema: z.ZodType, description: string) => ({
@@ -137,6 +141,20 @@ const routes: Route[] = [
     tags: ['holdings'],
     request: { params: IdParams, body: json(ImportCsvRequest, 'Broker CSV export') },
     ok: { status: 200, schema: ImportResultDto, description: 'Import result' },
+  },
+  {
+    method: 'get',
+    path: '/securities/search',
+    tags: ['securities'],
+    request: { query: SecuritySearchQuery },
+    ok: { status: 200, schema: SecuritySearchDto, description: 'Ticker prefix or name matches' },
+  },
+  {
+    method: 'get',
+    path: '/securities/{ticker}',
+    tags: ['securities'],
+    request: { params: TickerParams },
+    ok: { status: 200, schema: SecurityDto, description: 'One security' },
   },
 ];
 

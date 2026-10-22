@@ -2,6 +2,7 @@ import { createDb, defaultMigrationsFolder, runMigrations, type Db } from '@easy
 import { existsSync } from 'node:fs';
 import path from 'node:path';
 import { authenticate, type AuthUser, type RequestLike } from './auth';
+import { seedCatalog } from './catalog';
 import { resolveAuthSetup, type AuthEnv, type AuthSetup } from './config';
 import { ServiceError } from './errors';
 import { assertSameOrigin, route } from './http';
@@ -34,6 +35,8 @@ async function build(env: AppEnv): Promise<AppContext> {
   // Postgres (Supabase) is migrated by `pnpm db:migrate` at deploy time; embedded PGlite migrates itself.
   if (handle.driver === 'pglite')
     await runMigrations(handle, { migrationsFolder: migrationsFolder(env) });
+  // Cheap and idempotent (one select of ~50 tickers): search works on a fresh database.
+  await seedCatalog(handle.db);
   return { ...auth, db: handle.db };
 }
 

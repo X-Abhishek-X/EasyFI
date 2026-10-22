@@ -157,6 +157,47 @@ export const ImportResultDto = z
   })
   .openapi('ImportResult');
 
+// ---------- securities ----------
+export const SecurityType = z.enum([
+  'stock',
+  'etf',
+  'mutual_fund',
+  'mmf',
+  'crypto',
+  'bond',
+  'other',
+]);
+
+export const SecurityDto = z
+  .object({
+    ticker: z.string(),
+    name: z.string(),
+    type: SecurityType,
+    sector: z.string().nullable(),
+    industry: z.string().nullable(),
+    /** Fraction (0.0003 = 0.03%); null until a verified source fills it. */
+    expenseRatio: z.number().nullable(),
+  })
+  .openapi('Security');
+
+export const SecuritySearchDto = z
+  .object({ results: z.array(SecurityDto) })
+  .openapi('SecuritySearch');
+
+export const SecuritySearchQuery = z.object({
+  q: z.string().trim().max(60).default(''),
+  limit: z.coerce.number().int().min(1).max(25).default(10),
+});
+
+export const TickerParams = z.object({
+  ticker: z
+    .string()
+    .trim()
+    .min(1)
+    .max(20)
+    .openapi({ param: { name: 'ticker', in: 'path' } }),
+});
+
 export const IdParams = z.object({ id: Uuid.openapi({ param: { name: 'id', in: 'path' } }) });
 
 export type MeDto = z.infer<typeof MeDto>;
@@ -172,3 +213,5 @@ export type PatchHoldingRequest = z.infer<typeof PatchHoldingRequest>;
 export type ImportCsvRequest = z.infer<typeof ImportCsvRequest>;
 export type ImportResultDto = z.infer<typeof ImportResultDto>;
 export type ErrorEnvelope = z.infer<typeof ErrorEnvelope>;
+export type SecurityDto = z.infer<typeof SecurityDto>;
+export type SecuritySearchDto = z.infer<typeof SecuritySearchDto>;
