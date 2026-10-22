@@ -17,10 +17,11 @@ Stop when every box is ticked or only blocked tasks remain.
 ## M0 — Scaffold
 - [x] pnpm + Turborepo monorepo with `apps/web` and packages listed in spec §4; TS strict; shared tsconfig/eslint/prettier
   - Note: TypeScript pinned to 5.9.3 and ESLint to 9.x — typescript-eslint does not support TS 7, eslint-plugin-import/react not yet on ESLint 10. Packages are source-only (exports `./src/index.ts`, transpiled by Next).
-- [ ] Vitest configured per package; `pnpm verify` script at root
-- [ ] ESLint boundary rules enforcing spec §4 dependency rule (test: a forbidden import fails lint)
-- [ ] GitHub Actions CI running `pnpm verify`
-- [ ] `.env.example` listing every env var (Supabase URL/keys, DATABASE_URL, TIINGO_TOKEN, SEC_USER_AGENT, BLS_KEY, OPENROUTER_API_KEY, OPENROUTER_MODEL, INVITE_CODES)
+- [x] Vitest configured per package; `pnpm verify` script at root
+- [x] ESLint boundary rules enforcing spec §4 dependency rule (test: a forbidden import fails lint)
+  - Note: uses built-in `no-restricted-imports` per directory (`boundaryRules()` in root config); test in `tooling/boundaries.test.ts`.
+- [x] GitHub Actions CI running `pnpm verify`
+- [x] `.env.example` listing every env var (Supabase URL/keys, DATABASE_URL, TIINGO_TOKEN, SEC_USER_AGENT, BLS_KEY, OPENROUTER_API_KEY, OPENROUTER_MODEL, INVITE_CODES)
 
 ## M1 — Core domain (pure, fixtures)
 - [ ] `test-fixtures`: VOO, QQQ, SCHD, VGT, VTI holdings (top ~50 each + realistic sectors), prices, dividends
