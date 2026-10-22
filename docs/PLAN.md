@@ -62,7 +62,10 @@ Stop when every box is ticked or only blocked tasks remain.
 - [x] BLS CPI client
 - [x] Securities search + seed of popular ETFs
   - Note: `services/catalog.ts` (50 popular US ETFs, names only — expense ratios left null until a verified source fills them; seeded on app start, never overwrites). `GET /securities/search` + `/securities/{ticker}`. `data-sources/sec/company-tickers.ts` parses SEC company_tickers.json (~10k stocks) for the nightly job.
-- [ ] Nightly job (spec §9) + `job_runs` table + GitHub Actions cron workflow
+- [x] Nightly job (spec §9) + `job_runs` table + GitHub Actions cron workflow
+  - Note: `services/nightly.ts` (incremental prices/dividends from last stored date, N-PORT refresh only when newer, CPI only when a new month exists, prune >2y; per-ticker failures → `partial`), entry `packages/jobs/src/nightly.ts` via tsx, `.github/workflows/nightly.yml` (needs repo secrets DATABASE_URL, TIINGO_TOKEN, SEC_USER_AGENT, BLS_KEY; fails in CI without DATABASE_URL).
+  - Real run 2026-10-22 (SEC+BLS, no Tiingo token): 47/50 catalog ETFs with holdings (SPY/DIA are UITs; SPLG not in SEC fund list), 10,426 stocks, 181 CPI points, 1m13s.
+  - SEC client now looks a filing up by series id first (iShares/SPDR/Invesco trusts were beyond the 40-filing scan). Constituent tickers resolved by exact normalised issuer name vs SEC company list (`core/resolveConstituentTickers`), equity lines only: VOO 95.8%, SCHD 99.3%, VT 71.6% (non-US unresolved), AGG 0% (bonds). 25/25 random matches checked correct.
 
 ## M4 — Web app: shell, home, portfolio
 - [ ] App shell: sidebar, dark/light theme, responsive, auth pages (sign in/up with invite)

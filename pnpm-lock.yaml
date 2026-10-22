@@ -165,9 +165,22 @@ importers:
 
   packages/jobs:
     dependencies:
+      '@easyfi/data-sources':
+        specifier: workspace:^
+        version: link:../data-sources
+      '@easyfi/db':
+        specifier: workspace:^
+        version: link:../db
       '@easyfi/services':
         specifier: workspace:*
         version: link:../services
+    devDependencies:
+      '@types/node':
+        specifier: ^22.20.5
+        version: 22.20.5
+      tsx:
+        specifier: ^4.23.15
+        version: 4.23.15
 
   packages/services:
     dependencies:
