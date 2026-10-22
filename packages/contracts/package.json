@@ -1,0 +1,14 @@
+{
+  "name": "@easyfi/contracts",
+  "version": "0.0.0",
+  "private": true,
+  "description": "zod request/response schemas and OpenAPI generator",
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "scripts": {
+    "lint": "eslint .",
+    "typecheck": "tsc --noEmit"
+  }
+}

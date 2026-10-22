@@ -1,0 +1,17 @@
+{
+  "name": "@easyfi/jobs",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Nightly ingestion job entrypoints",
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "scripts": {
+    "lint": "eslint .",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@easyfi/services": "workspace:*"
+  }
+}

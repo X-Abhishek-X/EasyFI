@@ -1,0 +1,14 @@
+{
+  "name": "@easyfi/test-fixtures",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Sample ETF holdings, prices and dividends for tests",
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "scripts": {
+    "lint": "eslint .",
+    "typecheck": "tsc --noEmit"
+  }
+}

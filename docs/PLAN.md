@@ -15,7 +15,8 @@ Each iteration:
 Stop when every box is ticked or only blocked tasks remain.
 
 ## M0 — Scaffold
-- [ ] pnpm + Turborepo monorepo with `apps/web` and packages listed in spec §4; TS strict; shared tsconfig/eslint/prettier
+- [x] pnpm + Turborepo monorepo with `apps/web` and packages listed in spec §4; TS strict; shared tsconfig/eslint/prettier
+  - Note: TypeScript pinned to 5.9.3 and ESLint to 9.x — typescript-eslint does not support TS 7, eslint-plugin-import/react not yet on ESLint 10. Packages are source-only (exports `./src/index.ts`, transpiled by Next).
 - [ ] Vitest configured per package; `pnpm verify` script at root
 - [ ] ESLint boundary rules enforcing spec §4 dependency rule (test: a forbidden import fails lint)
 - [ ] GitHub Actions CI running `pnpm verify`

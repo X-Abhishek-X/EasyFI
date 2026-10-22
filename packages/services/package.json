@@ -1,0 +1,20 @@
+{
+  "name": "@easyfi/services",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Use-cases: repos -> core -> contract DTOs, scoped by userId",
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "scripts": {
+    "lint": "eslint .",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@easyfi/contracts": "workspace:*",
+    "@easyfi/core": "workspace:*",
+    "@easyfi/data-sources": "workspace:*",
+    "@easyfi/db": "workspace:*"
+  }
+}
