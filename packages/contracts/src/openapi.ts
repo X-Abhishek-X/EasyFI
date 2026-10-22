@@ -1,0 +1,148 @@
+import {
+  OpenAPIRegistry,
+  OpenApiGeneratorV31,
+  type RouteConfig,
+} from '@asteasolutions/zod-to-openapi';
+import type { z } from 'zod';
+import {
+  CreateHoldingRequest,
+  CreatePortfolioRequest,
+  ErrorEnvelope,
+  HoldingDto,
+  HoldingListDto,
+  IdParams,
+  ImportCsvRequest,
+  ImportResultDto,
+  MeDto,
+  PatchHoldingRequest,
+  PatchMeRequest,
+  PatchPortfolioRequest,
+  PortfolioDto,
+  PortfolioListDto,
+} from './schemas';
+
+const json = (schema: z.ZodType, description: string) => ({
+  description,
+  content: { 'application/json': { schema } },
+});
+
+const errors = {
+  400: json(ErrorEnvelope, 'Validation error'),
+  401: json(ErrorEnvelope, 'Not signed in'),
+  404: json(ErrorEnvelope, 'Not found'),
+};
+
+type Route = Omit<RouteConfig, 'responses' | 'security'> & {
+  ok: { status: 200 | 201 | 204; schema?: z.ZodType; description: string };
+};
+
+const routes: Route[] = [
+  {
+    method: 'get',
+    path: '/me',
+    tags: ['me'],
+    ok: { status: 200, schema: MeDto, description: 'Current user' },
+  },
+  {
+    method: 'patch',
+    path: '/me',
+    tags: ['me'],
+    request: { body: json(PatchMeRequest, 'Profile changes') },
+    ok: { status: 200, schema: MeDto, description: 'Updated user' },
+  },
+  {
+    method: 'get',
+    path: '/portfolios',
+    tags: ['portfolios'],
+    ok: { status: 200, schema: PortfolioListDto, description: 'Your portfolios' },
+  },
+  {
+    method: 'post',
+    path: '/portfolios',
+    tags: ['portfolios'],
+    request: { body: json(CreatePortfolioRequest, 'New portfolio') },
+    ok: { status: 201, schema: PortfolioDto, description: 'Created' },
+  },
+  {
+    method: 'get',
+    path: '/portfolios/{id}',
+    tags: ['portfolios'],
+    request: { params: IdParams },
+    ok: { status: 200, schema: PortfolioDto, description: 'Portfolio' },
+  },
+  {
+    method: 'patch',
+    path: '/portfolios/{id}',
+    tags: ['portfolios'],
+    request: { params: IdParams, body: json(PatchPortfolioRequest, 'Changes') },
+    ok: { status: 200, schema: PortfolioDto, description: 'Updated' },
+  },
+  {
+    method: 'delete',
+    path: '/portfolios/{id}',
+    tags: ['portfolios'],
+    request: { params: IdParams },
+    ok: { status: 204, description: 'Deleted with its holdings' },
+  },
+  {
+    method: 'get',
+    path: '/portfolios/{id}/holdings',
+    tags: ['holdings'],
+    request: { params: IdParams },
+    ok: { status: 200, schema: HoldingListDto, description: 'Holdings' },
+  },
+  {
+    method: 'post',
+    path: '/portfolios/{id}/holdings',
+    tags: ['holdings'],
+    request: { params: IdParams, body: json(CreateHoldingRequest, 'New holding') },
+    ok: { status: 201, schema: HoldingDto, description: 'Created' },
+  },
+  {
+    method: 'patch',
+    path: '/holdings/{id}',
+    tags: ['holdings'],
+    request: { params: IdParams, body: json(PatchHoldingRequest, 'Changes') },
+    ok: { status: 200, schema: HoldingDto, description: 'Updated' },
+  },
+  {
+    method: 'delete',
+    path: '/holdings/{id}',
+    tags: ['holdings'],
+    request: { params: IdParams },
+    ok: { status: 204, description: 'Deleted' },
+  },
+  {
+    method: 'post',
+    path: '/portfolios/{id}/import',
+    tags: ['holdings'],
+    request: { params: IdParams, body: json(ImportCsvRequest, 'Broker CSV export') },
+    ok: { status: 200, schema: ImportResultDto, description: 'Import result' },
+  },
+];
+
+export function buildOpenApiDocument() {
+  const registry = new OpenAPIRegistry();
+  registry.registerComponent('securitySchemes', 'bearer', {
+    type: 'http',
+    scheme: 'bearer',
+    bearerFormat: 'JWT',
+    description:
+      'Supabase access token (Flutter). The web app uses the Supabase SSR cookie instead.',
+  });
+  for (const { ok, ...r } of routes) {
+    registry.registerPath({
+      ...r,
+      security: [{ bearer: [] }],
+      responses: {
+        [ok.status]: ok.schema ? json(ok.schema, ok.description) : { description: ok.description },
+        ...errors,
+      },
+    });
+  }
+  return new OpenApiGeneratorV31(registry.definitions).generateDocument({
+    openapi: '3.1.0',
+    info: { title: 'EasyFI API', version: '1.0.0' },
+    servers: [{ url: '/api/v1' }],
+  });
+}

@@ -43,7 +43,8 @@ Stop when every box is ticked or only blocked tasks remain.
   - Note: no DATABASE_URL → embedded PGlite (`.easyfi-data/`) for local demo mode.
 - [x] PGlite test harness (fresh migrated DB per test file)
 - [x] Repositories with user scoping (test: user A cannot read user B's portfolio)
-- [ ] `contracts` zod schemas + OpenAPI generation at `/api/v1/openapi.json`
+- [x] `contracts` zod schemas + OpenAPI generation at `/api/v1/openapi.json`
+  - Note: M2 endpoints only (me, portfolios, holdings, import); later milestones add their schemas. Request bodies use `z.strictObject` so unknown fields 400. Stale `apps/web/.next/types` from an earlier build can fail typecheck locally — delete `.next`.
 - [ ] Auth middleware: Supabase JWT (Bearer) + SSR cookie; invite-code sign-up gate
 - [ ] Error envelope + zod validation helper
 - [ ] Endpoints: `/me`, portfolios CRUD, holdings CRUD, CSV import
