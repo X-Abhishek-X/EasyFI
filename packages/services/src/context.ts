@@ -4,6 +4,7 @@ import path from 'node:path';
 import { authenticate, type AuthUser, type RequestLike } from './auth';
 import { resolveAuthSetup, type AuthEnv, type AuthSetup } from './config';
 import { ServiceError } from './errors';
+import { route } from './http';
 
 export interface AppEnv extends AuthEnv {
   DATABASE_URL?: string | undefined;
@@ -52,4 +53,20 @@ export async function requireUser(req: RequestLike, context: AppContext): Promis
   const user = await authenticate(req, context.config);
   if (!user) throw new ServiceError('unauthorized', 'Sign in required.');
   return user;
+}
+
+/** `route()` + app context + signed-in user (401 otherwise). Route params arrive as a Promise (Next 16). */
+export function authedRoute<P = Record<string, never>>(
+  fn: (args: {
+    req: Request;
+    ctx: AppContext;
+    user: AuthUser;
+    params: Promise<P>;
+  }) => Promise<unknown>,
+) {
+  return route(async (req: Request, routeCtx: { params: Promise<P> }) => {
+    const ctx = await appContext();
+    const user = await requireUser(req, ctx);
+    return fn({ req, ctx, user, params: routeCtx?.params ?? Promise.resolve({} as P) });
+  });
 }

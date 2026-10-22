@@ -49,7 +49,8 @@ Stop when every box is ticked or only blocked tasks remain.
   - Note: `services/auth.ts` (Bearer/chunked `sb-*-auth-token` cookie, HS256 secret or Supabase JWKS), `config.ts` (demo mode only outside production; prod without Supabase env throws), `POST /api/v1/auth/sign-up` creates users via the Supabase admin API (`SupabaseAuthAdmin`) so the invite check cannot be bypassed from the browser. `db/migrate.ts` joins the drizzle path at runtime — Turbopack failed on the literal URL.
 - [x] Error envelope + zod validation helper
   - Note: `services/http.ts`: `route()` wrapper, `parseBody/parseParams/parseQuery`. Bad route ids return 404 (not 400) so ids cannot be probed; unexpected errors are logged and returned as a generic 500.
-- [ ] Endpoints: `/me`, portfolios CRUD, holdings CRUD, CSV import
+- [x] Endpoints: `/me`, portfolios CRUD, holdings CRUD, CSV import
+  - Note: `services/me.ts`, `services/portfolios.ts` + `authedRoute()`; foreign ids are 404. CSV cash/money-market rows add to the portfolio cash balance; value-only lines store shares=0 + statementValue (shares is NOT NULL).
 - [ ] Generated typed client package used by web
 
 ## M3 — Data ingestion

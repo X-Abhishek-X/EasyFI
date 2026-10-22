@@ -14,7 +14,7 @@ export const AccountType = z.enum([
   'other',
 ]);
 export const Theme = z.enum(['dark', 'light']);
-export const CsvFormat = z.enum(['generic', 'fidelity', 'schwab', 'vanguard']);
+export const CsvFormat = z.enum(['auto', 'generic', 'fidelity', 'schwab', 'vanguard']);
 
 export const Uuid = z.uuid();
 export const IsoDate = z.iso.date();
@@ -141,7 +141,7 @@ export const PatchHoldingRequest = z
 export const ImportCsvRequest = z
   .strictObject({
     csv: z.string().min(1).max(2_000_000),
-    format: CsvFormat.default('generic'),
+    format: CsvFormat.default('auto'),
     /** replace = delete existing holdings in the portfolio first. */
     mode: z.enum(['append', 'replace']).default('append'),
   })
