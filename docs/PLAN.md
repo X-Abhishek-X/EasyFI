@@ -47,7 +47,8 @@ Stop when every box is ticked or only blocked tasks remain.
   - Note: M2 endpoints only (me, portfolios, holdings, import); later milestones add their schemas. Request bodies use `z.strictObject` so unknown fields 400. Stale `apps/web/.next/types` from an earlier build can fail typecheck locally — delete `.next`.
 - [x] Auth middleware: Supabase JWT (Bearer) + SSR cookie; invite-code sign-up gate
   - Note: `services/auth.ts` (Bearer/chunked `sb-*-auth-token` cookie, HS256 secret or Supabase JWKS), `config.ts` (demo mode only outside production; prod without Supabase env throws), `POST /api/v1/auth/sign-up` creates users via the Supabase admin API (`SupabaseAuthAdmin`) so the invite check cannot be bypassed from the browser. `db/migrate.ts` joins the drizzle path at runtime — Turbopack failed on the literal URL.
-- [ ] Error envelope + zod validation helper
+- [x] Error envelope + zod validation helper
+  - Note: `services/http.ts`: `route()` wrapper, `parseBody/parseParams/parseQuery`. Bad route ids return 404 (not 400) so ids cannot be probed; unexpected errors are logged and returned as a generic 500.
 - [ ] Endpoints: `/me`, portfolios CRUD, holdings CRUD, CSV import
 - [ ] Generated typed client package used by web
 
