@@ -1,0 +1,126 @@
+Features
+Pricing
+About
+Sign in
+Get started
+Help
+
+How SimpliFi works — linking, portfolios, charts, and account data.
+
+If your question is not here, email us.
+
+What SimpliFi is
+
+SimpliFi is a website at simplifinow.co. Sign in there. There is no native phone app. You do not need a Google account.
+
+Linked brokerage accounts
+
+One login can hold several portfolios. On a portfolio, open Holdings and choose Connect account.
+
+Linking is read-only through SnapTrade. You sign in on SnapTrade's site. We never see your brokerage password. SimpliFi cannot place trades, move money, or change anything at your brokerage.
+
+Each brokerage account maps onto one portfolio. Stocks, ETFs, and options come through. An option stays at your brokerage’s value and counts in the portfolio total. The same is true for Treasuries, CDs, and other lines the brokerage values that we cannot price from market data.
+
+Linked accounts update from the brokerage about once a day. Stock and ETF prices update through the trading day.
+
+A Fidelity Crypto account can appear on the link list with a total and no positions. See Fidelity Crypto accounts.
+
+Choose which accounts go in a portfolio
+
+Open Settings → Linked brokerages, or a portfolio's Holdings page, and choose which accounts go in a portfolio.
+
+Turn on the accounts you want, pick the portfolio (or a new one), then preview and confirm. An account that is already on a portfolio starts turned off; turning it on moves it. Each brokerage account belongs to one portfolio.
+
+A brokerage account, an IRA, and a managed account can share one portfolio, or each can sit on its own.
+
+The same stock in more than one account
+
+You can hold the same stock in a taxable account, a Traditional IRA, and a Roth inside one portfolio. Those are separate lines.
+
+On the portfolio, open Holdings, then Add holding. The Account menu is what separates them. Choose the account type before you add the shares. Add and add another keeps the account you just used.
+
+Canadian accounts and ETFs
+
+Questrade and Wealthsimple connect the same way as a US brokerage.
+
+What works today
+
+Read-only linking from a portfolio's Holdings page
+Import of holdings priced in US dollars
+Company look-through for US-listed stocks and ETFs
+A Toronto-listed stock or ETF added by hand with a statement value, which counts in the portfolio total
+
+What does not
+
+Canadian-dollar and Toronto-listed positions on import (they are skipped)
+Live prices or company look-through on Toronto-listed names
+A dedicated TFSA or RRSP account type — choose Other when you import
+Fidelity Crypto accounts
+
+Fidelity Crypto sits in a separate Fidelity system from the brokerage book. Linking still lists the Crypto account and can show Fidelity’s total. The coins themselves are not imported.
+
+What works today
+
+Fidelity brokerage, IRA, and similar accounts import stocks, ETFs, and other lines as usual
+A coin added by hand on Holdings (BTC-USD, ETH-USD, and other coins we price) counts in the portfolio total
+
+What does not
+
+Automatic import of Fidelity Crypto positions
+Daily updates of those coins from Fidelity
+
+On the portfolio, open Holdings, then Add holding. Choose the account type, search for the coin, and enter the shares. Those rows stay as holdings you can edit. They are not overwritten when the linked Crypto account stays empty.
+
+Income
+
+Open Dividends in the sidebar. Income there is the dividends and fund distributions on the shares you hold now.
+
+The trailing-twelve-month figure is the last year of those distributions on your current shares. The income timeline shows recent received months and a twelve-month projection. Cash and money-market sweep interest are not on this page.
+
+A lump of cash
+
+Open Inflation in the sidebar. The purchasing-power calculator can use a custom amount, an annual contribution, an inflation rate, and a growth rate. It shows future value and inflation-adjusted value.
+
+That projection is the balance, not the dividend income on the Dividends page.
+
+Total tracked value chart
+
+The total is what your holdings are worth now. The gain beside it is that value against your cost basis.
+
+Max change is the move from the first point on the chart to the last. The chart replays the shares you hold today at past end-of-day closes. It is an illustration of those holdings, not your gain versus what you paid.
+
+Security and linked accounts
+
+Linking is read-only through SnapTrade. You sign in on SnapTrade's site. We never see your brokerage password. SimpliFi cannot place trades or move money.
+
+Deployed traffic uses HTTPS. Portfolio data is stored on Amazon Web Services, in a database that is not open to the public internet and uses storage encryption at rest. More detail is on the Security page.
+
+To stop a link, unlink from Settings → Linked brokerages or the portfolio's Holdings page. Imported positions stay in the portfolio as holdings you can edit. They stop updating from the brokerage.
+
+Cancelling a subscription does not unlink a brokerage or delete those portfolios. Permanently deleting the account is a separate request. See Cancel or delete your account.
+
+Cancel or delete your account
+
+Cancel in Settings → Manage billing. Cancellation stops future renewals. You keep access until the end of the period you already paid for. Your login and portfolios stay, so you can subscribe again later. Cancelling does not unlink a brokerage or delete your account.
+
+If you also want the brokerage connection gone, unlink it from Settings → Linked brokerages.
+
+To permanently delete your account and the data we hold, email customer.support@simplifinow.co. There is no delete button in the app. A verified request removes the login, the SnapTrade user and brokerage connections, the access secret we store, and the portfolio data we hold for the account.
+
+See the Refund and Cancellation Policy for billing detail.
+
+© 2026 NGJC LLC
+
+Pricing
+About
+Help
+Contact
+What’s new
+Terms
+Privacy
+Security
+Refunds
+
+Market Data from Tiingo.com
+
+SimpliFi would like to remind you that market data and portfolio analytics on this site are not necessarily real-time or accurate. Current values use IEX last when available and can be delayed; value trends use prior-session end-of-day closes. ETF holdings look-through and other derived figures may be delayed, incomplete, or wrong. The site and content are provided “as is” and without warranties of any kind. You bear all risks associated with use of the site and content, including any reliance on the accuracy, completeness, or usefulness of any information available here. SimpliFi should not be relied upon as a substitute for independent research before making investment decisions. Past performance is not an indicator of future performance. SimpliFi is not a registered investment adviser or broker-dealer. Any charts, research, analyses, prices, or other information on this site are provided as general market information for educational purposes only and do not constitute investment, tax, or legal advice.

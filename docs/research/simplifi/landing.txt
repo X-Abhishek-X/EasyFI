@@ -1,0 +1,97 @@
+Features
+Pricing
+About
+Sign in
+Get started
+See what you actually own.
+
+Look through ETFs, spot overlap and hidden bets, track income and inflation, and ask plain-English questions — one subscription for the whole picture.
+
+Get started
+Sign in
+Built for clarity
+
+Everything you need to understand holdings, risk, income, and context — without the noise.
+
+Portfolio look-through
+See what you actually own under the ETFs and funds — sectors, industries, and concentrations.
+Overlap and hidden bets
+The constellation view links shared stocks across your funds, so you can see exactly where risk is stacked.
+Investment Explorer
+Ask plain-English questions about themes, overlap, and diversification — grounded in our fund data.
+Dividends and income
+Track distributions, yield leaders, and how passive income stacks across your portfolio.
+Inflation lens
+Put purchasing power in context with CPI snapshots and category drivers.
+EOD prices and live movers
+End-of-day valuation plus IEX last for daily movers — clear as-of dates on every number.
+See your portfolio as a constellation
+
+Every ETF becomes a hub and every holding a star. Shared stocks link across funds, so the same bet hiding in three places is impossible to miss.
+
+Your day starts with the whole portfolio
+
+Overview, movers, and a quick path into Explorer — one place to see what changed.
+
+Look through to the underlying holdings
+
+Fold by company, sector, or industry. Every bar shows which ETFs — and any direct position — add up to your real exposure.
+
+Compare funds without the spreadsheet
+
+Shared holdings, sector tilt, and weight modes so differences jump out.
+
+Ask in plain English
+
+Ask whether a fund fits — get the sector shift, the overlap, and the shared holdings table, grounded in SimpliFi’s fund database.
+
+Income you can actually scan
+
+Portfolio snapshot, calendar, and yield leaders without drowning in density.
+
+How it works
+
+From first portfolio to daily insight — without a brokerage login.
+
+1
+Add or import a portfolio
+
+Start with a few tickers or bring holdings in. Watchlists work the same way.
+
+2
+Nightly EOD look-through
+
+We price holdings end-of-day and refresh look-through so you wake up to a current picture.
+
+3
+Explore, compare, ask
+
+Dive into overlap, income, inflation, and Investment Explorer — all on one subscription.
+
+Simple pricing
+
+One plan unlocks the full app. Cancel anytime from Settings.
+
+Monthly
+$15.00/mo
+Get started
+Annual
+Save 15%
+$153.00/yr$180.00/yr
+Get started
+
+© 2026 NGJC LLC
+
+Pricing
+About
+Help
+Contact
+What’s new
+Terms
+Privacy
+Security
+Refunds
+
+Market Data from Tiingo.com
+
+SimpliFi would like to remind you that market data and portfolio analytics on this site are not necessarily real-time or accurate. Current values use IEX last when available and can be delayed; value trends use prior-session end-of-day closes. ETF holdings look-through and other derived figures may be delayed, incomplete, or wrong. The site and content are provided “as is” and without warranties of any kind. You bear all risks associated with use of the site and content, including any reliance on the accuracy, completeness, or usefulness of any information available here. SimpliFi should not be relied upon as a substitute for independent research before making investment decisions. Past performance is not an indicator of future performance. SimpliFi is not a registered investment adviser or broker-dealer. Any charts, research, analyses, prices, or other information on this site are provided as general market information for educational purposes only and do not constitute investment, tax, or legal advice.

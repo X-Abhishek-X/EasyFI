@@ -1,0 +1,50 @@
+Features
+Pricing
+About
+Sign in
+Get started
+Simple pricing
+
+One plan unlocks the full app. Cancel anytime from Settings.
+
+Monthly
+$15.00/mo
+Get started
+Annual
+Save 15%
+$153.00/yr$180.00/yr
+Get started
+Everything included
+Portfolio look-through and exposure views
+Investment Explorer chat
+Compare funds side by side
+Dividends and passive income
+Inflation lens (CPI)
+EOD valuation and IEX daily movers
+Billing FAQ
+What am I buying?
+One plan unlocks the full SimpliFi app: portfolio look-through, compare, Investment Explorer, dividends, inflation context, and EOD valuations. There is no free tier of those tools.
+Does the subscription auto-renew?
+Yes. Monthly and annual plans renew automatically until you cancel. You can cancel anytime in Settings → Manage billing.
+How do I cancel or get a refund?
+Cancel in Settings → Manage billing. Cancellation stops future renewals. You keep access until the end of the period you already paid for. Your login and portfolios stay, so you can subscribe again later. Cancelling does not unlink a brokerage or delete your account. To permanently delete your account and the data we hold, email customer.support@simplifinow.co. There is no delete button in the app. A verified request removes the login, the SnapTrade user and brokerage connections, the access secret we store, and the portfolio data we hold for the account. See our Refund and Cancellation Policy for when we refund a charge.
+Taxes?
+Prices are shown in USD. Applicable tax may be added at checkout based on your location.
+
+Full detail: Refund and Cancellation Policy · Terms of Service.
+
+© 2026 NGJC LLC
+
+Pricing
+About
+Help
+Contact
+What’s new
+Terms
+Privacy
+Security
+Refunds
+
+Market Data from Tiingo.com
+
+SimpliFi would like to remind you that market data and portfolio analytics on this site are not necessarily real-time or accurate. Current values use IEX last when available and can be delayed; value trends use prior-session end-of-day closes. ETF holdings look-through and other derived figures may be delayed, incomplete, or wrong. The site and content are provided “as is” and without warranties of any kind. You bear all risks associated with use of the site and content, including any reliance on the accuracy, completeness, or usefulness of any information available here. SimpliFi should not be relied upon as a substitute for independent research before making investment decisions. Past performance is not an indicator of future performance. SimpliFi is not a registered investment adviser or broker-dealer. Any charts, research, analyses, prices, or other information on this site are provided as general market information for educational purposes only and do not constitute investment, tax, or legal advice.

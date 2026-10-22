@@ -1,0 +1,53 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 280" role="img" aria-labelledby="title desc">
+  <title id="title">Monthly plan</title>
+  <desc id="desc">A blue-lagoon calendar with a teal trend badge for the monthly subscription.</desc>
+
+  <defs>
+    <linearGradient id="calBody" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#17365E"/>
+      <stop offset="100%" stop-color="#102642"/>
+    </linearGradient>
+    <linearGradient id="calHeader" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#2A5280"/>
+      <stop offset="100%" stop-color="#1E3A5F"/>
+    </linearGradient>
+    <linearGradient id="calTeal" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#56E6CA"/>
+      <stop offset="100%" stop-color="#20B596"/>
+    </linearGradient>
+    <filter id="calShadow" x="-25%" y="-25%" width="150%" height="150%">
+      <feDropShadow dx="0" dy="10" stdDeviation="12" flood-color="#06111F" flood-opacity=".28"/>
+    </filter>
+  </defs>
+
+  <ellipse cx="160" cy="250" rx="100" ry="14" fill="#0A1730" opacity=".34"/>
+
+  <g filter="url(#calShadow)">
+    <rect x="48" y="40" width="200" height="180" rx="28" fill="url(#calBody)" stroke="#2B527C" stroke-width="2"/>
+    <rect x="48" y="40" width="200" height="44" rx="28" fill="url(#calHeader)"/>
+    <rect x="48" y="62" width="200" height="22" fill="url(#calHeader)"/>
+    <!-- rings -->
+    <rect x="96" y="28" width="16" height="28" rx="8" fill="#6DDCFF"/>
+    <rect x="184" y="28" width="16" height="28" rx="8" fill="#6DDCFF"/>
+    <!-- dots grid -->
+    <circle cx="96" cy="120" r="12" fill="#45E1BD"/>
+    <circle cx="148" cy="120" r="12" fill="#4D84FF"/>
+    <circle cx="200" cy="120" r="12" fill="#45E1BD"/>
+    <circle cx="96" cy="168" r="12" fill="#4D84FF"/>
+    <circle cx="148" cy="168" r="12" fill="#6DDCFF"/>
+    <circle cx="200" cy="168" r="12" fill="#4D84FF"/>
+  </g>
+
+  <!-- trend badge -->
+  <g transform="translate(210 175)" filter="url(#calShadow)">
+    <circle r="42" fill="url(#calTeal)" stroke="#E4FFF8" stroke-width="4"/>
+    <polyline
+      points="-18 6 -6 6 0 -4 10 10 18 -10"
+      fill="none"
+      stroke="#FFFFFF"
+      stroke-width="5"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+    />
+  </g>
+</svg>
