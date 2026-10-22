@@ -16,6 +16,11 @@
     "@easyfi/contracts": "workspace:*",
     "@easyfi/core": "workspace:*",
     "@easyfi/data-sources": "workspace:*",
-    "@easyfi/db": "workspace:*"
+    "@easyfi/db": "workspace:*",
+    "jose": "^6.2.13",
+    "zod": "^4.6.7"
+  },
+  "devDependencies": {
+    "@easyfi/test-fixtures": "workspace:*"
   }
 }

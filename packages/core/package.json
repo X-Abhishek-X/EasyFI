@@ -11,5 +11,8 @@
     "lint": "eslint .",
     "typecheck": "tsc --noEmit",
     "test": "vitest run --passWithNoTests"
+  },
+  "devDependencies": {
+    "@easyfi/test-fixtures": "workspace:*"
   }
 }

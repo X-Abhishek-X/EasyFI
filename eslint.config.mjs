@@ -6,6 +6,7 @@ import tseslint from 'typescript-eslint';
 const ALL = ['contracts', 'core', 'data-sources', 'db', 'jobs', 'services', 'test-fixtures'];
 const allowed = {
   'packages/core': [],
+  'packages/core-tests': ['test-fixtures'],
   'packages/contracts': [],
   'packages/test-fixtures': [],
   'packages/data-sources': ['test-fixtures'],
@@ -57,4 +58,9 @@ export default tseslint.config(
     },
   },
   ...boundaryConfigs,
+  {
+    // Tests anywhere may additionally use shared fixtures.
+    files: ['packages/core/**/*.test.ts', 'packages/contracts/**/*.test.ts'],
+    rules: boundaryRules('packages/core-tests'),
+  },
 );
