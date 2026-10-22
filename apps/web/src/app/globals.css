@@ -1,1 +1,182 @@
 @import 'tailwindcss';
+
+/*
+ * EasyFI design tokens.
+ * Raw values live on :root (dark, default) and [data-theme='light'].
+ * `@theme inline` maps them onto Tailwind utilities (bg-surface, text-muted, …)
+ * so every component switches theme without `dark:` variants.
+ */
+
+@custom-variant light (&:where([data-theme='light'], [data-theme='light'] *));
+
+:root,
+[data-theme='dark'] {
+  color-scheme: dark;
+  --bg: #070b12;
+  --rail: #0a1019;
+  --surface: #0f1622;
+  --surface-2: #151d2b;
+  --surface-3: #1b2535;
+  --line: #222d3e;
+  --line-strong: #2f3c51;
+  --fg: #eef2f8;
+  --muted: #a3adbd;
+  --faint: #6d788a;
+
+  --brand: #2bd67b;
+  --brand-hover: #4be08f;
+  --brand-ink: #03140a;
+
+  --up: #3ddba6;
+  --down: #ff6b6b;
+  --warn: #f5b041;
+
+  --sev-high-bg: rgb(255 93 93 / 0.14);
+  --sev-high-fg: #ff7b86;
+  --sev-med-bg: rgb(245 165 36 / 0.15);
+  --sev-med-fg: #f8c046;
+  --sev-low-bg: rgb(148 163 184 / 0.14);
+  --sev-low-fg: #b2bccb;
+
+  /* Chart palette — shared by donuts, stacks, constellation hubs. */
+  --c1: #4f86ff; /* blue */
+  --c2: #9474f5; /* violet */
+  --c3: #3fd9b5; /* teal */
+  --c4: #f5a524; /* amber */
+  --c5: #ff6baa; /* pink */
+  --c6: #22d3ee; /* cyan */
+  --c-other: #6b7686; /* slate */
+
+  --track: #1e2838;
+  --glow: rgb(79 134 255 / 0.35);
+  --space-bg-1: #0d1233;
+  --space-bg-2: #070a1c;
+  --shadow-card: 0 1px 0 rgb(255 255 255 / 0.02) inset;
+}
+
+[data-theme='light'] {
+  color-scheme: light;
+  --bg: #f3f5f9;
+  --rail: #ffffff;
+  --surface: #ffffff;
+  --surface-2: #f6f8fb;
+  --surface-3: #edf1f6;
+  --line: #e1e6ee;
+  --line-strong: #cbd3df;
+  --fg: #0d1626;
+  --muted: #4f5b6e;
+  --faint: #7c8798;
+
+  --brand: #16b364;
+  --brand-hover: #12a159;
+  --brand-ink: #ffffff;
+
+  --up: #078a5c;
+  --down: #d93636;
+  --warn: #b7791f;
+
+  --sev-high-bg: #fde8ea;
+  --sev-high-fg: #c0283a;
+  --sev-med-bg: #fdf1d8;
+  --sev-med-fg: #9a6200;
+  --sev-low-bg: #eef1f5;
+  --sev-low-fg: #4f5b6e;
+
+  --c1: #3b6ff0;
+  --c2: #7d5ce8;
+  --c3: #17b394;
+  --c4: #e8960c;
+  --c5: #e8508f;
+  --c6: #0fb5d1;
+  --c-other: #8a94a3;
+
+  --track: #e6eaf1;
+  --glow: rgb(59 111 240 / 0.25);
+  --space-bg-1: #eef2fb;
+  --space-bg-2: #f9fafc;
+  --shadow-card: 0 1px 2px rgb(16 24 40 / 0.04);
+}
+
+@theme inline {
+  --color-bg: var(--bg);
+  --color-rail: var(--rail);
+  --color-surface: var(--surface);
+  --color-surface-2: var(--surface-2);
+  --color-surface-3: var(--surface-3);
+  --color-line: var(--line);
+  --color-line-strong: var(--line-strong);
+  --color-fg: var(--fg);
+  --color-muted: var(--muted);
+  --color-faint: var(--faint);
+  --color-brand: var(--brand);
+  --color-brand-hover: var(--brand-hover);
+  --color-brand-ink: var(--brand-ink);
+  --color-up: var(--up);
+  --color-down: var(--down);
+  --color-warn: var(--warn);
+  --color-track: var(--track);
+  --color-c1: var(--c1);
+  --color-c2: var(--c2);
+  --color-c3: var(--c3);
+  --color-c4: var(--c4);
+  --color-c5: var(--c5);
+  --color-c6: var(--c6);
+  --color-c-other: var(--c-other);
+
+  --font-sans: var(--font-ui), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-code), ui-monospace, SFMono-Regular, Menlo, monospace;
+
+  --radius-card: 14px;
+}
+
+html {
+  background: var(--bg);
+}
+
+body {
+  background: var(--bg);
+  color: var(--fg);
+  font-family: var(--font-sans);
+  font-feature-settings:
+    'tnum' 1,
+    'cv11' 1;
+  -webkit-font-smoothing: antialiased;
+}
+
+:focus-visible {
+  outline: 2px solid var(--brand);
+  outline-offset: 2px;
+  border-radius: 6px;
+}
+
+::selection {
+  background: rgb(43 214 123 / 0.3);
+}
+
+@utility scroll-x {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: thin;
+}
+
+@utility no-scrollbar {
+  scrollbar-width: none;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+@keyframes shimmer {
+  100% {
+    transform: translateX(100%);
+  }
+}
