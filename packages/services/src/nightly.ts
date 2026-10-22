@@ -15,7 +15,14 @@ import {
   securitiesRepo,
   type Db,
 } from '@easyfi/db';
-import { buildIssuerIndex, resolveConstituentTickers, type IssuerIndex } from '@easyfi/core';
+import {
+  addMonthKey,
+  addMonths,
+  buildIssuerIndex,
+  monthKey,
+  resolveConstituentTickers,
+  type IssuerIndex,
+} from '@easyfi/core';
 
 export interface NightlySources {
   prices: PriceSource | null;
@@ -47,14 +54,9 @@ export interface NightlyResult {
   errors: NightlyError[];
 }
 
-const HISTORY_YEARS = 2;
+const HISTORY_MONTHS = 24;
 // CASH sentinel and CUSIP-only lines from CSV imports have no market data source.
 const priceable = (t: string) => t !== 'CASH' && !/^(?=.*\d)[0-9A-Z]{9}$/.test(t);
-const minusYears = (iso: string, n: number) => `${Number(iso.slice(0, 4)) - n}${iso.slice(4)}`;
-const prevMonth = (iso: string) => {
-  const [y, m] = [Number(iso.slice(0, 4)), Number(iso.slice(5, 7))];
-  return m === 1 ? `${y - 1}-12` : `${y}-${String(m - 1).padStart(2, '0')}`;
-};
 const message = (e: unknown) => (e instanceof Error ? e.message : String(e)).slice(0, 300);
 
 /**
@@ -76,10 +78,16 @@ export async function runNightly(deps: NightlyDeps): Promise<NightlyResult> {
     pruned: 0,
   };
   const errors: NightlyError[] = [];
+  // step -> [attempts, failures]: a step that failed for *every* item fails the run (e.g. revoked token).
+  const tally = new Map<string, [number, number]>();
   const attempt = async (step: string, ticker: string | undefined, fn: () => Promise<void>) => {
+    const t = tally.get(step) ?? [0, 0];
+    tally.set(step, t);
+    t[0]++;
     try {
       await fn();
     } catch (e) {
+      t[1]++;
       errors.push({ step, ...(ticker ? { ticker } : {}), message: message(e) });
     }
   };
@@ -88,7 +96,7 @@ export async function runNightly(deps: NightlyDeps): Promise<NightlyResult> {
     const inUse = (await jobs.tickersInUse()).map((t) => t.toUpperCase());
     const tickers = [...new Set([...inUse, ...deps.etfs])].filter(priceable).sort();
     counts.tickers = tickers.length;
-    const historyStart = minusYears(today, HISTORY_YEARS);
+    const historyStart = addMonths(today, -HISTORY_MONTHS); // clamps 29 Feb
 
     let issuers: IssuerIndex = new Map();
     if (deps.companies) {
@@ -107,7 +115,10 @@ export async function runNightly(deps: NightlyDeps): Promise<NightlyResult> {
 
     if (sources.prices) {
       const prices = pricesRepo(db);
-      const last = new Map((await prices.latest(tickers)).map((p) => [p.ticker, p.date]));
+      let last = new Map<string, string>();
+      await attempt('prices-latest', undefined, async () => {
+        last = new Map((await prices.latest(tickers)).map((p) => [p.ticker, p.date]));
+      });
       for (const t of tickers) {
         await attempt('prices', t, async () => {
           // Re-fetch the last stored bar too: providers revise the latest close.
@@ -129,13 +140,20 @@ export async function runNightly(deps: NightlyDeps): Promise<NightlyResult> {
       }
     }
 
-    if (sources.holdings) {
+    if (sources.holdings && deps.companies && issuers.size === 0) {
+      // Without the issuer index a new snapshot would be stored ticker-less and never re-resolved
+      // (it is only replaced by a newer filing). Keep last night's data instead.
+      errors.push({ step: 'holdings', message: 'skipped: SEC company list unavailable' });
+    } else if (sources.holdings) {
       const repo = fundHoldingsRepo(db);
-      for (const fund of [...new Set(deps.etfs)].sort()) {
+      const catalog = new Set(deps.etfs);
+      // Held tickers too: funds outside the catalog (typed 'stock' by the SEC list) still refresh;
+      // non-funds resolve to null cheaply from the cached SEC fund list.
+      for (const fund of [...new Set([...deps.etfs, ...tickers])].sort()) {
         await attempt('holdings', fund, async () => {
           const snap = await sources.holdings!.latestHoldings(fund);
           if (!snap) {
-            counts.fundsNoFiling! += 1; // UIT funds (SPY, QQQ, DIA) file no N-PORT
+            if (catalog.has(fund)) counts.fundsNoFiling! += 1; // UITs (SPY, QQQ, DIA) file no N-PORT
             return;
           }
           const [stored] = await repo.snapshotDates(fund);
@@ -158,11 +176,16 @@ export async function runNightly(deps: NightlyDeps): Promise<NightlyResult> {
       await attempt('cpi', undefined, async () => {
         const repo = cpiRepo(db);
         const stored = await repo.list(DEFAULT_CPI_SERIES_IDS);
-        const lastPeriod = stored.reduce((m, p) => (p.period > m ? p.period : m), '');
-        if (lastPeriod >= prevMonth(today)) return; // monthly series: nothing new yet
+        const last = new Map<string, string>();
+        for (const p of stored) {
+          if (p.period > (last.get(p.seriesId) ?? '')) last.set(p.seriesId, p.period);
+        }
+        const target = addMonthKey(monthKey(today), -1);
+        // Per series: one lagging series must still be backfilled.
+        if (DEFAULT_CPI_SERIES_IDS.every((id) => (last.get(id) ?? '') >= target)) return;
         const year = Number(today.slice(0, 4));
         const points = (await sources.cpi!.series(DEFAULT_CPI_SERIES_IDS, year - 1, year)).filter(
-          (p) => p.period > lastPeriod,
+          (p) => p.period > (last.get(p.seriesId) ?? ''),
         );
         await repo.upsert(points);
         counts.cpi = points.length;
@@ -173,12 +196,18 @@ export async function runNightly(deps: NightlyDeps): Promise<NightlyResult> {
       counts.pruned = await pricesRepo(db).prune(historyStart);
     });
 
-    const result: NightlyResult = { status: errors.length ? 'partial' : 'ok', counts, errors };
+    const allFailed = [...tally.values()].some(([n, f]) => n > 0 && f === n);
+    const status = allFailed ? 'failed' : errors.length ? 'partial' : 'ok';
+    const result: NightlyResult = { status, counts, errors };
     await jobs.finish(run.id, result);
     return result;
   } catch (e) {
     errors.push({ step: 'run', message: message(e) });
-    await jobs.finish(run.id, { status: 'failed', counts, errors });
+    try {
+      await jobs.finish(run.id, { status: 'failed', counts, errors });
+    } catch (e2) {
+      errors.push({ step: 'job_runs', message: message(e2) });
+    }
     return { status: 'failed', counts, errors };
   }
 }

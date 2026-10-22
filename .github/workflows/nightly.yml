@@ -5,6 +5,9 @@ on:
     - cron: '0 2 * * 1-5' # 02:00 UTC weekdays (spec §9)
   workflow_dispatch:
 
+permissions:
+  contents: read
+
 concurrency:
   group: nightly
   cancel-in-progress: false

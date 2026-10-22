@@ -25,8 +25,8 @@ describe('issuerNameKey', () => {
 describe('resolveConstituentTickers', () => {
   const index = buildIssuerIndex([
     { ticker: 'NVDA', name: 'NVIDIA CORP' },
-    { ticker: 'GOOGL', name: 'Alphabet Inc.' },
-    { ticker: 'GOOG', name: 'Alphabet Inc.' },
+    { ticker: 'GOOGL', name: 'Alphabet Inc.', cik: '1652044' },
+    { ticker: 'GOOG', name: 'Alphabet Inc.', cik: '1652044' },
     { ticker: 'KO', name: 'COCA COLA CO' },
   ]);
 
@@ -62,5 +62,33 @@ describe('resolveConstituentTickers', () => {
       index,
     );
     expect(c!.constituentTicker).toBe('BRK.B');
+  });
+});
+
+describe('ambiguous issuer names (review)', () => {
+  const index = buildIssuerIndex([
+    { ticker: 'BF.B', name: 'BROWN FORMAN CORP', cik: '14693' },
+    { ticker: 'BF.A', name: 'BROWN FORMAN CORP', cik: '14693' },
+    { ticker: 'CCL', name: 'CARNIVAL CORP', cik: '815097' },
+    { ticker: 'CUK', name: 'CARNIVAL PLC', cik: '1125259' },
+  ]);
+
+  it('maps multiple share classes of one company (same CIK) to that company', () => {
+    const [a, b] = resolveConstituentTickers(
+      [
+        { constituentTicker: null, name: 'Brown-Forman Corp Class A' },
+        { constituentTicker: null, name: 'Brown-Forman Corp Class B' },
+      ],
+      index,
+    );
+    expect([a!.constituentTicker, b!.constituentTicker]).toEqual(['BF.B', 'BF.B']);
+  });
+
+  it('leaves names shared by different companies (different CIKs) unresolved', () => {
+    const [c] = resolveConstituentTickers(
+      [{ constituentTicker: null, name: 'Carnival Corp' }],
+      index,
+    );
+    expect(c!.constituentTicker).toBeNull();
   });
 });

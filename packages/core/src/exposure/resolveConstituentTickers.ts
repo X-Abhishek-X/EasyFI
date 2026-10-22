@@ -52,15 +52,25 @@ export function issuerNameKey(name: string): string {
 
 export type IssuerIndex = ReadonlyMap<string, string>;
 
-/** name key → ticker. Earlier entries win (SEC lists the primary share class first: GOOGL before GOOG). */
+/**
+ * name key → ticker. Several share classes of one company (same CIK: GOOGL/GOOG, BF.A/BF.B) map to
+ * the first listed class — look-through is company-level. A key shared by *different* companies
+ * (Carnival Corp vs Carnival plc) is dropped: a guess would merge two companies' exposure.
+ */
 export function buildIssuerIndex(
-  companies: readonly { ticker: string; name: string }[],
+  companies: readonly { ticker: string; name: string; cik?: string | null }[],
 ): IssuerIndex {
-  const index = new Map<string, string>();
+  const first = new Map<string, { ticker: string; cik: string | null }>();
+  const ambiguous = new Set<string>();
   for (const c of companies) {
     const key = issuerNameKey(c.name);
-    if (key && !index.has(key)) index.set(key, c.ticker);
+    if (!key) continue;
+    const seen = first.get(key);
+    if (!seen) first.set(key, { ticker: c.ticker, cik: c.cik ?? null });
+    else if (seen.cik === null || c.cik == null || seen.cik !== c.cik) ambiguous.add(key);
   }
+  const index = new Map<string, string>();
+  for (const [key, v] of first) if (!ambiguous.has(key)) index.set(key, v.ticker);
   return index;
 }
 

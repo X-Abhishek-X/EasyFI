@@ -119,7 +119,8 @@ export class SecEdgarClient implements HoldingsSource {
   async latestFiling(ticker: string): Promise<NportFiling | null> {
     const ids = await this.resolveFund(ticker);
     if (!ids) return null;
-    const direct = await this.filingBySeries(ids);
+    // Any failure of the series lookup (403/429 from browse-edgar) falls back to scanning.
+    const direct = await this.filingBySeries(ids).catch(() => null);
     if (direct) return direct;
     const cik10 = String(ids.cik).padStart(10, '0');
     const subs = await this.getJson<Submissions>(
@@ -172,7 +173,11 @@ export class SecEdgarClient implements HoldingsSource {
       fundTicker: ticker,
       ...(this.opts.cusipToTicker ? { cusipToTicker: this.opts.cusipToTicker } : {}),
     });
-    return { asOf: doc.asOf || filing.reportDate, constituents: doc.constituents };
+    // Never store an empty asOf: it would compare below every later filing and stick forever.
+    return {
+      asOf: doc.asOf || filing.reportDate || filing.filingDate,
+      constituents: doc.constituents,
+    };
   }
 
   /**

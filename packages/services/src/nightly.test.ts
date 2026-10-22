@@ -193,4 +193,64 @@ describe('runNightly', () => {
     });
     expect(await securitiesRepo(h.db).get('NVDA')).toMatchObject({ type: 'stock' });
   });
+
+  it('fails the run when a step fails for every ticker (revoked token)', async () => {
+    const dead: PriceSource = {
+      ...prices,
+      latest: prices.latest.bind(prices),
+      meta: prices.meta.bind(prices),
+      eodHistory: async () => {
+        throw new Error('401 invalid token');
+      },
+    };
+    const run = await runNightly({
+      db: h.db,
+      sources: sources({ prices: dead }),
+      today: TODAY,
+      etfs: ['VOO'],
+    });
+    expect(run.status).toBe('failed');
+    expect((await jobsRepo(h.db).latest())?.status).toBe('failed');
+  });
+
+  it('keeps the last snapshot when the SEC company list is unavailable', async () => {
+    const run = await runNightly({
+      db: h.db,
+      sources: { prices: null, dividends: null, holdings: sources().holdings, cpi: null },
+      today: TODAY,
+      etfs: ['VOO'],
+      companies: async () => {
+        throw new Error('SEC 503');
+      },
+    });
+    expect(run.counts.funds).toBe(0);
+    expect(run.errors.map((e) => e.step)).toEqual(['securities', 'holdings']);
+  });
+
+  it('refreshes held funds outside the catalog', async () => {
+    const holdings = new FakeHoldingsSource({ AAPL: { asOf: '2026-08-31', constituents: [] } });
+    const run = await runNightly({
+      db: h.db,
+      sources: { prices: null, dividends: null, holdings, cpi: null },
+      today: TODAY,
+      etfs: [],
+    });
+    expect(run.counts).toMatchObject({ funds: 1, fundsNoFiling: 0 });
+  });
+
+  it('backfills a lagging CPI series and handles 29 Feb', async () => {
+    await cpiRepo(h.db).upsert([{ seriesId: 'CUUR0000SA0', period: '2028-01', value: 1 }]);
+    const cpi = new FakeCpiSource([
+      { seriesId: 'CUUR0000SA0', period: '2028-01', value: 1 },
+      { seriesId: 'CUUR0000SA0L1E', period: '2028-01', value: 2 },
+    ]);
+    const run = await runNightly({
+      db: h.db,
+      sources: { prices: null, dividends: null, holdings: null, cpi },
+      today: '2028-02-29',
+      etfs: [],
+    });
+    expect(run.status).toBe('ok');
+    expect(run.counts.cpi).toBe(1);
+  });
 });
