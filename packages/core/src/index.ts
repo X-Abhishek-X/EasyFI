@@ -1,1 +1,3 @@
-export const PACKAGE_NAME = '@easyfi/core';
+export * from './types';
+export * from './exposure';
+export * from './income';

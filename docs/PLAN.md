@@ -24,24 +24,25 @@ Stop when every box is ticked or only blocked tasks remain.
 - [x] `.env.example` listing every env var (Supabase URL/keys, DATABASE_URL, TIINGO_TOKEN, SEC_USER_AGENT, BLS_KEY, OPENROUTER_API_KEY, OPENROUTER_MODEL, INVITE_CODES)
 
 ## M1 — Core domain (pure, fixtures)
-- [ ] `test-fixtures`: VOO, QQQ, SCHD, VGT, VTI holdings (top ~50 each + realistic sectors), prices, dividends
-- [ ] `normalizeTicker`
-- [ ] `lookThrough` + per-source breakdown + unresolved slice
-- [ ] `foldBy` (company/sector/industry/asset)
-- [ ] `concentration` + `diversificationScore`
-- [ ] `overlap`
-- [ ] `exposureInsights`
-- [ ] `constellationGraph`
-- [ ] `portfolioValueSeries`
-- [ ] `dividendSummary` (TTM, yield, YoC, next 30d, projection, frequency)
-- [ ] `purchasingPower`
-- [ ] `parseBrokerCsv` (generic + Fidelity + Schwab + Vanguard)
-- [ ] `whatIf`, `feeDrag`
+- [x] `test-fixtures`: VOO, QQQ, SCHD, VGT, VTI holdings (top ~50 each + realistic sectors), prices, dividends
+- [x] `normalizeTicker`
+- [x] `lookThrough` + per-source breakdown + unresolved slice
+- [x] `foldBy` (company/sector/industry/asset)
+- [x] `concentration` + `diversificationScore`
+- [x] `overlap`
+- [x] `exposureInsights`
+- [x] `constellationGraph`
+- [x] `portfolioValueSeries`
+- [x] `dividendSummary` (TTM, yield, YoC, next 30d, projection, frequency)
+- [x] `purchasingPower` (+ `cpiSnapshot`, `fiProgress`, `parseMoney`)
+- [x] `parseBrokerCsv` (generic + Fidelity + Schwab + Vanguard)
+- [x] `whatIf`, `feeDrag`
 
 ## M2 — Database, auth, API foundation
-- [ ] Drizzle schema per spec §5 + migrations; RLS-enabled-no-policies migration
-- [ ] PGlite test harness (fresh migrated DB per test file)
-- [ ] Repositories with user scoping (test: user A cannot read user B's portfolio)
+- [x] Drizzle schema per spec §5 + migrations; RLS-enabled-no-policies migration
+  - Note: no DATABASE_URL → embedded PGlite (`.easyfi-data/`) for local demo mode.
+- [x] PGlite test harness (fresh migrated DB per test file)
+- [x] Repositories with user scoping (test: user A cannot read user B's portfolio)
 - [ ] `contracts` zod schemas + OpenAPI generation at `/api/v1/openapi.json`
 - [ ] Auth middleware: Supabase JWT (Bearer) + SSR cookie; invite-code sign-up gate
 - [ ] Error envelope + zod validation helper
@@ -49,10 +50,11 @@ Stop when every box is ticked or only blocked tasks remain.
 - [ ] Generated typed client package used by web
 
 ## M3 — Data ingestion
-- [ ] `data-sources` interfaces + fakes: PriceSource, HoldingsSource, DividendSource, CpiSource, LLMProvider
-- [ ] Tiingo client (EOD, dividends, IEX last) with recorded fixtures
-- [ ] SEC EDGAR N-PORT client: ticker→series lookup, parse holdings XML, map CUSIP→ticker
-- [ ] BLS CPI client
+- [x] `data-sources` interfaces + fakes: PriceSource, HoldingsSource, DividendSource, CpiSource, LLMProvider
+- [x] Tiingo client (EOD, dividends, IEX last) with recorded fixtures
+- [x] SEC EDGAR N-PORT client: ticker→series lookup, parse holdings XML, map CUSIP→ticker
+  - Note: UIT funds (SPY, QQQ, DIA) don't file N-PORT → need seeded holdings.
+- [x] BLS CPI client
 - [ ] Securities search + seed of popular ETFs
 - [ ] Nightly job (spec §9) + `job_runs` table + GitHub Actions cron workflow
 
