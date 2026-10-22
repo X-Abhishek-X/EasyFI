@@ -51,7 +51,8 @@ Stop when every box is ticked or only blocked tasks remain.
   - Note: `services/http.ts`: `route()` wrapper, `parseBody/parseParams/parseQuery`. Bad route ids return 404 (not 400) so ids cannot be probed; unexpected errors are logged and returned as a generic 500.
 - [x] Endpoints: `/me`, portfolios CRUD, holdings CRUD, CSV import
   - Note: `services/me.ts`, `services/portfolios.ts` + `authedRoute()`; foreign ids are 404. CSV cash/money-market rows add to the portfolio cash balance; value-only lines store shares=0 + statementValue (shares is NOT NULL).
-- [ ] Generated typed client package used by web
+- [x] Generated typed client package used by web
+  - Note: lives in `@easyfi/contracts/client` (openapi-typescript → `schema.gen.ts` + openapi-fetch `createApiClient`). Regenerate with `pnpm --filter @easyfi/contracts gen:client`; a file-snapshot test fails CI when it drifts. Web: `src/lib/api.ts`.
 
 ## M3 — Data ingestion
 - [x] `data-sources` interfaces + fakes: PriceSource, HoldingsSource, DividendSource, CpiSource, LLMProvider
