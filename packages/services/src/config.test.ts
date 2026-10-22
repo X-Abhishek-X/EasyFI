@@ -4,7 +4,7 @@ import { resolveAuthSetup } from './config';
 
 describe('resolveAuthSetup', () => {
   it('uses demo mode only outside production when Supabase is not configured', () => {
-    const s = resolveAuthSetup({ NODE_ENV: 'development' });
+    const s = resolveAuthSetup({ NODE_ENV: 'development', EASYFI_DEMO: '1' });
     expect(s.config.demo).toBe(true);
     expect(s.authAdmin).toBeInstanceOf(FakeAuthAdmin);
   });
@@ -37,5 +37,15 @@ describe('resolveAuthSetup', () => {
         NEXT_PUBLIC_SUPABASE_URL: 'https://abc.supabase.co',
       }),
     ).toThrow(/SUPABASE_SERVICE_ROLE_KEY/);
+  });
+});
+
+describe('demo mode needs an explicit opt-in', () => {
+  it('refuses to start without Supabase unless EASYFI_DEMO=1, whatever NODE_ENV says', () => {
+    for (const NODE_ENV of [undefined, 'development', 'staging']) {
+      expect(() => resolveAuthSetup({ NODE_ENV })).toThrow(/EASYFI_DEMO/);
+    }
+    expect(resolveAuthSetup({ NODE_ENV: 'development', EASYFI_DEMO: '1' }).config.demo).toBe(true);
+    expect(() => resolveAuthSetup({ NODE_ENV: 'production', EASYFI_DEMO: '1' })).toThrow();
   });
 });

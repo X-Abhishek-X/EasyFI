@@ -1,7 +1,7 @@
 import { describe, expect, it, vi } from 'vitest';
 import { z } from 'zod';
 import { ServiceError } from './errors';
-import { parseBody, parseParams, parseQuery, route } from './http';
+import { assertSameOrigin, parseBody, parseParams, parseQuery, route } from './http';
 
 const body = (v: unknown) =>
   new Request('http://x/api', {
@@ -74,5 +74,24 @@ describe('route', () => {
     expect(JSON.stringify(await r.json())).not.toContain('hunter2');
     expect(log).toHaveBeenCalled();
     log.mockRestore();
+  });
+});
+
+describe('assertSameOrigin (cookie-auth CSRF guard)', () => {
+  const r = (method: string, headers: Record<string, string>) =>
+    new Request('https://easyfi.app/api/v1/portfolios', { method, headers });
+
+  it('allows reads, bearer-token calls and same-origin writes', () => {
+    expect(() => assertSameOrigin(r('GET', {}))).not.toThrow();
+    expect(() => assertSameOrigin(r('POST', { authorization: 'Bearer x' }))).not.toThrow();
+    expect(() => assertSameOrigin(r('POST', { origin: 'https://easyfi.app' }))).not.toThrow();
+  });
+
+  it('rejects cross-origin or origin-less cookie writes with 403', () => {
+    for (const h of [{ origin: 'https://evil.example' }, {}] as Record<string, string>[]) {
+      expect(() => assertSameOrigin(r('DELETE', h))).toThrow(
+        expect.objectContaining({ status: 403 }),
+      );
+    }
   });
 });

@@ -101,4 +101,4 @@ Stop when every box is ticked or only blocked tasks remain.
 - [ ] Smoke test on production URL
 
 ## Blocked
-(none yet)
+- Rate limiting for `POST /auth/sign-up` (invite brute force; review finding 2026-10-22). Needs a decision: DB-backed counter table (free tier) vs Vercel/Upstash. Unblocks when the storage choice is made.

@@ -65,3 +65,15 @@ export function route<C>(fn: (req: Request, ctx: C) => Promise<unknown>) {
     }
   };
 }
+
+/**
+ * CSRF guard for cookie-authenticated writes: the browser always sends `Origin` on
+ * POST/PATCH/DELETE, so a missing or foreign Origin is refused. Bearer-token clients (Flutter) and
+ * reads are unaffected.
+ */
+export function assertSameOrigin(req: Request): void {
+  if (req.method === 'GET' || req.method === 'HEAD' || req.headers.get('authorization')) return;
+  if (req.headers.get('origin') !== new URL(req.url).origin) {
+    throw new ServiceError('forbidden', 'Cross-origin request refused.');
+  }
+}

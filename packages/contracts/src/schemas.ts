@@ -91,6 +91,7 @@ export const PatchPortfolioRequest = z
     type: PortfolioType.optional(),
     cash: z.number().min(0).optional(),
   })
+  .refine((v) => Object.keys(v).length > 0, 'Nothing to update')
   .openapi('PatchPortfolio');
 
 // ---------- holdings ----------
@@ -135,6 +136,7 @@ export const PatchHoldingRequest = z
     statementKind: holdingFields.statementKind,
     tags: z.array(z.string().trim().min(1).max(30)).max(20).optional(),
   })
+  .refine((v) => Object.keys(v).length > 0, 'Nothing to update')
   .openapi('PatchHolding');
 
 // ---------- CSV import ----------

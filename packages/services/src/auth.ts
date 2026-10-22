@@ -1,6 +1,6 @@
 import { AuthAdminError, type AuthAdmin } from '@easyfi/data-sources';
 import { invitesRepo, profilesRepo, type Db } from '@easyfi/db';
-import { createRemoteJWKSet, jwtVerify, type JWTVerifyGetKey } from 'jose';
+import { createRemoteJWKSet, decodeProtectedHeader, jwtVerify, type JWTVerifyGetKey } from 'jose';
 import { ServiceError } from './errors';
 
 /** Fixed user for local demo mode (no Supabase configured). */
@@ -75,14 +75,21 @@ export async function authenticate(req: RequestLike, cfg: AuthConfig): Promise<A
   const token = accessTokenFromRequest(req);
   if (!token) return null;
   try {
-    const opts = { audience: 'authenticated', algorithms: ['HS256', 'RS256', 'ES256'] };
+    const opts = {
+      audience: 'authenticated',
+      algorithms: ['HS256', 'RS256', 'ES256'],
+      requiredClaims: ['exp', 'sub'],
+    };
+    // Legacy projects sign HS256 with the shared secret; newer ones use asymmetric keys (JWKS).
+    const alg = decodeProtectedHeader(token).alg;
     let payload;
-    if (cfg.jwksUrl) {
+    if (alg === 'HS256') {
+      if (!cfg.jwtSecret) return null;
+      ({ payload } = await jwtVerify(token, new TextEncoder().encode(cfg.jwtSecret), opts));
+    } else if (cfg.jwksUrl) {
       let keys = jwksCache.get(cfg.jwksUrl);
       if (!keys) jwksCache.set(cfg.jwksUrl, (keys = createRemoteJWKSet(new URL(cfg.jwksUrl))));
       ({ payload } = await jwtVerify(token, keys, opts));
-    } else if (cfg.jwtSecret) {
-      ({ payload } = await jwtVerify(token, new TextEncoder().encode(cfg.jwtSecret), opts));
     } else {
       return null;
     }
@@ -141,7 +148,12 @@ export async function signUp(deps: SignUpDeps, input: SignUpInput): Promise<{ us
 
   // Consume after creation; a lost race (last use taken meanwhile) rolls the user back.
   if (!envCode && !(await invites.redeem(code))) {
-    await deps.authAdmin.deleteUser(userId);
+    try {
+      await deps.authAdmin.deleteUser(userId);
+    } catch (e) {
+      // The orphaned auth user has no profile; flag it for manual cleanup rather than 500.
+      console.error('[signUp] rollback failed; delete auth user manually', userId, e);
+    }
     throw new ServiceError('invalid_invite', 'That invite code is not valid or has been used up.');
   }
   await profilesRepo(deps.db).upsert(userId, { displayName: input.displayName ?? null });

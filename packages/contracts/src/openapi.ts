@@ -31,7 +31,14 @@ const json = (schema: z.ZodType, description: string) => ({
 const errors = {
   400: json(ErrorEnvelope, 'Validation error'),
   401: json(ErrorEnvelope, 'Not signed in'),
+  403: json(ErrorEnvelope, 'Cross-origin cookie request refused'),
   404: json(ErrorEnvelope, 'Not found'),
+};
+
+const publicErrors = {
+  400: json(ErrorEnvelope, 'Validation error or invalid invite'),
+  409: json(ErrorEnvelope, 'Email already registered'),
+  502: json(ErrorEnvelope, 'Auth provider unavailable'),
 };
 
 type Route = Omit<RouteConfig, 'responses' | 'security'> & {
@@ -148,7 +155,7 @@ export function buildOpenApiDocument() {
       security: isPublic ? [] : [{ bearer: [] }],
       responses: {
         [ok.status]: ok.schema ? json(ok.schema, ok.description) : { description: ok.description },
-        ...errors,
+        ...(isPublic ? publicErrors : errors),
       },
     });
   }

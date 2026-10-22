@@ -2,7 +2,7 @@ import { invitesRepo, profilesRepo, type DbHandle } from '@easyfi/db';
 import { createTestDb } from '@easyfi/db/testing';
 import { FakeAuthAdmin } from '@easyfi/data-sources';
 import { SignJWT } from 'jose';
-import { afterAll, beforeAll, describe, expect, it } from 'vitest';
+import { afterAll, beforeAll, describe, expect, it, vi } from 'vitest';
 import { accessTokenFromRequest, authenticate, DEMO_USER_ID, signUp } from './auth';
 import { ServiceError } from './errors';
 
@@ -133,5 +133,74 @@ describe('signUp (invite gate)', () => {
     await signUp(deps, input('dup@b.co', 'FRIENDS'));
     const err = await signUp(deps, input('dup@b.co', 'FRIENDS')).catch((e) => e);
     expect(err).toMatchObject({ code: 'email_taken', status: 409 });
+  });
+});
+
+describe('review fixes', () => {
+  it('uses the HS256 secret even when a JWKS url is also configured (legacy projects)', async () => {
+    const token = await mint({ sub: uid });
+    await expect(
+      authenticate(req({ authorization: `Bearer ${token}` }), {
+        jwtSecret: secret,
+        jwksUrl: 'https://never-called.invalid/jwks.json',
+      }),
+    ).resolves.toMatchObject({ userId: uid });
+  });
+
+  it('rejects tokens without exp', async () => {
+    const t = await new SignJWT({ aud: 'authenticated', sub: uid })
+      .setProtectedHeader({ alg: 'HS256' })
+      .sign(new TextEncoder().encode(secret));
+    await expect(
+      authenticate(req({ authorization: `Bearer ${t}` }), { jwtSecret: secret }),
+    ).resolves.toBeNull();
+  });
+});
+
+describe('signUp review fixes', () => {
+  let h2: DbHandle;
+  beforeAll(async () => {
+    h2 = await createTestDb();
+    await invitesRepo(h2.db).create({ code: 'MixedCase1', maxUses: 1 });
+  });
+  afterAll(() => h2.close());
+
+  it('matches DB invite codes case-insensitively', async () => {
+    const admin = new FakeAuthAdmin();
+    await signUp(
+      { db: h2.db, authAdmin: admin, inviteCodes: [] },
+      {
+        email: 'm@b.co',
+        password: 'correct horse',
+        inviteCode: 'mixedcase1',
+      },
+    );
+    expect(admin.users.size).toBe(1);
+  });
+
+  it('still reports invalid_invite when rollback of a lost race fails', async () => {
+    const admin = new FakeAuthAdmin();
+    await invitesRepo(h2.db).create({ code: 'RACE', maxUses: 1 });
+    // Simulate losing the race: someone else redeems after our check, and deleteUser fails.
+    const orig = admin.createUser.bind(admin);
+    admin.createUser = async (i) => {
+      await invitesRepo(h2.db).redeem('RACE');
+      return orig(i);
+    };
+    admin.deleteUser = async () => {
+      throw new Error('supabase down');
+    };
+    const log = vi.spyOn(console, 'error').mockImplementation(() => {});
+    const err = await signUp(
+      { db: h2.db, authAdmin: admin, inviteCodes: [] },
+      {
+        email: 'r@b.co',
+        password: 'correct horse',
+        inviteCode: 'RACE',
+      },
+    ).catch((e) => e);
+    expect(err).toMatchObject({ code: 'invalid_invite' });
+    expect(log).toHaveBeenCalled();
+    log.mockRestore();
   });
 });

@@ -120,4 +120,31 @@ describe('portfolioService', () => {
       'VTI',
     ]);
   });
+
+  it('replace import is atomic, refuses an empty parse, and resets cash to the CSV', async () => {
+    const p = await svc().create(A, { name: 'Safe', type: 'actual', cash: 999 });
+    await svc().addHolding(A, p.id, {
+      ticker: 'KEEP',
+      shares: 1,
+      accountType: 'taxable',
+      tags: [],
+    });
+    await expect(
+      svc().importCsv(A, p.id, { csv: 'no header here', format: 'auto', mode: 'replace' }),
+    ).rejects.toMatchObject({ code: 'bad_request' });
+    expect((await svc().listHoldings(A, p.id)).holdings.map((x) => x.ticker)).toEqual(['KEEP']);
+
+    await svc().importCsv(A, p.id, {
+      csv: 'Symbol,Quantity\nVOO,1',
+      format: 'auto',
+      mode: 'replace',
+    });
+    expect((await svc().get(A, p.id)).cash).toBe(0);
+  });
+
+  it('empty patch bodies are rejected before reaching the DB', async () => {
+    const { PatchHoldingRequest, PatchPortfolioRequest } = await import('@easyfi/contracts');
+    expect(PatchHoldingRequest.safeParse({}).success).toBe(false);
+    expect(PatchPortfolioRequest.safeParse({}).success).toBe(false);
+  });
 });

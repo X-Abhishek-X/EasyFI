@@ -7,6 +7,8 @@ export interface AuthEnv {
   SUPABASE_SERVICE_ROLE_KEY?: string | undefined;
   SUPABASE_JWT_SECRET?: string | undefined;
   INVITE_CODES?: string | undefined;
+  /** `1` enables local demo mode (no Supabase, single demo user). Refused in production. */
+  EASYFI_DEMO?: string | undefined;
 }
 
 export interface AuthSetup {
@@ -28,9 +30,10 @@ export function resolveAuthSetup(env: AuthEnv): AuthSetup {
     .map((c) => c.trim())
     .filter(Boolean);
   if (!url) {
-    if (env.NODE_ENV === 'production') {
+    // Explicit opt-in: a missing env var on any host (NODE_ENV unset, "staging"...) must not open the app.
+    if (env.EASYFI_DEMO !== '1' || env.NODE_ENV === 'production') {
       throw new Error(
-        'Auth not configured: set NEXT_PUBLIC_SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY',
+        'Auth not configured: set NEXT_PUBLIC_SUPABASE_URL + SUPABASE_SERVICE_ROLE_KEY, or EASYFI_DEMO=1 for local demo mode',
       );
     }
     return { config: { demo: true }, authAdmin: new FakeAuthAdmin(), inviteCodes };

@@ -4,7 +4,7 @@ import path from 'node:path';
 import { authenticate, type AuthUser, type RequestLike } from './auth';
 import { resolveAuthSetup, type AuthEnv, type AuthSetup } from './config';
 import { ServiceError } from './errors';
-import { route } from './http';
+import { assertSameOrigin, route } from './http';
 
 export interface AppEnv extends AuthEnv {
   DATABASE_URL?: string | undefined;
@@ -65,6 +65,7 @@ export function authedRoute<P = Record<string, never>>(
   }) => Promise<unknown>,
 ) {
   return route(async (req: Request, routeCtx: { params: Promise<P> }) => {
+    assertSameOrigin(req);
     const ctx = await appContext();
     const user = await requireUser(req, ctx);
     return fn({ req, ctx, user, params: routeCtx?.params ?? Promise.resolve({} as P) });

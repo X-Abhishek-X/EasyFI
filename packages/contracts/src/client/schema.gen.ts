@@ -32,7 +32,7 @@ export interface paths {
             'application/json': components['schemas']['SignUpResult'];
           };
         };
-        /** @description Validation error */
+        /** @description Validation error or invalid invite */
         400: {
           headers: {
             [name: string]: unknown;
@@ -41,8 +41,8 @@ export interface paths {
             'application/json': components['schemas']['Error'];
           };
         };
-        /** @description Not signed in */
-        401: {
+        /** @description Email already registered */
+        409: {
           headers: {
             [name: string]: unknown;
           };
@@ -50,8 +50,8 @@ export interface paths {
             'application/json': components['schemas']['Error'];
           };
         };
-        /** @description Not found */
-        404: {
+        /** @description Auth provider unavailable */
+        502: {
           headers: {
             [name: string]: unknown;
           };
@@ -103,6 +103,15 @@ export interface paths {
         };
         /** @description Not signed in */
         401: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content: {
+            'application/json': components['schemas']['Error'];
+          };
+        };
+        /** @description Cross-origin cookie request refused */
+        403: {
           headers: {
             [name: string]: unknown;
           };
@@ -167,6 +176,15 @@ export interface paths {
             'application/json': components['schemas']['Error'];
           };
         };
+        /** @description Cross-origin cookie request refused */
+        403: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content: {
+            'application/json': components['schemas']['Error'];
+          };
+        };
         /** @description Not found */
         404: {
           headers: {
@@ -223,6 +241,15 @@ export interface paths {
             'application/json': components['schemas']['Error'];
           };
         };
+        /** @description Cross-origin cookie request refused */
+        403: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content: {
+            'application/json': components['schemas']['Error'];
+          };
+        };
         /** @description Not found */
         404: {
           headers: {
@@ -269,6 +296,15 @@ export interface paths {
         };
         /** @description Not signed in */
         401: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content: {
+            'application/json': components['schemas']['Error'];
+          };
+        };
+        /** @description Cross-origin cookie request refused */
+        403: {
           headers: {
             [name: string]: unknown;
           };
@@ -338,6 +374,15 @@ export interface paths {
             'application/json': components['schemas']['Error'];
           };
         };
+        /** @description Cross-origin cookie request refused */
+        403: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content: {
+            'application/json': components['schemas']['Error'];
+          };
+        };
         /** @description Not found */
         404: {
           headers: {
@@ -380,6 +425,15 @@ export interface paths {
         };
         /** @description Not signed in */
         401: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content: {
+            'application/json': components['schemas']['Error'];
+          };
+        };
+        /** @description Cross-origin cookie request refused */
+        403: {
           headers: {
             [name: string]: unknown;
           };
@@ -436,6 +490,15 @@ export interface paths {
         };
         /** @description Not signed in */
         401: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content: {
+            'application/json': components['schemas']['Error'];
+          };
+        };
+        /** @description Cross-origin cookie request refused */
+        403: {
           headers: {
             [name: string]: unknown;
           };
@@ -501,6 +564,15 @@ export interface paths {
             'application/json': components['schemas']['Error'];
           };
         };
+        /** @description Cross-origin cookie request refused */
+        403: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content: {
+            'application/json': components['schemas']['Error'];
+          };
+        };
         /** @description Not found */
         404: {
           headers: {
@@ -549,6 +621,15 @@ export interface paths {
         };
         /** @description Not signed in */
         401: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content: {
+            'application/json': components['schemas']['Error'];
+          };
+        };
+        /** @description Cross-origin cookie request refused */
+        403: {
           headers: {
             [name: string]: unknown;
           };
@@ -619,6 +700,15 @@ export interface paths {
             'application/json': components['schemas']['Error'];
           };
         };
+        /** @description Cross-origin cookie request refused */
+        403: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content: {
+            'application/json': components['schemas']['Error'];
+          };
+        };
         /** @description Not found */
         404: {
           headers: {
@@ -668,6 +758,15 @@ export interface paths {
         };
         /** @description Not signed in */
         401: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content: {
+            'application/json': components['schemas']['Error'];
+          };
+        };
+        /** @description Cross-origin cookie request refused */
+        403: {
           headers: {
             [name: string]: unknown;
           };
@@ -733,6 +832,15 @@ export interface paths {
         };
         /** @description Not signed in */
         401: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content: {
+            'application/json': components['schemas']['Error'];
+          };
+        };
+        /** @description Cross-origin cookie request refused */
+        403: {
           headers: {
             [name: string]: unknown;
           };

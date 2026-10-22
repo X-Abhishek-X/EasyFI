@@ -138,20 +138,34 @@ export function portfolioService(db: Db) {
           tags: [],
         }));
 
-      if (input.mode === 'replace') {
-        const existing = await holdings.list(user.userId, portfolioId);
-        await holdings.bulkDelete(
-          user.userId,
-          existing.map((x) => x.id),
+      if (input.mode === 'replace' && rows.length === 0 && cashLines.length === 0) {
+        // A wrong format parses to nothing; replacing with nothing would wipe the portfolio.
+        throw new ServiceError(
+          'bad_request',
+          skipped[0]?.reason ?? 'No holdings found in the CSV.',
         );
       }
-      const inserted = (await holdings.bulkInsert(user.userId, portfolioId, rows)) ?? [];
-      if (cashLines.length) {
-        const prior =
-          input.mode === 'replace' ? 0 : ((await cash.get(user.userId, portfolioId)) ?? 0);
-        const added = cashLines.reduce((s, x) => s + (x.statementValue ?? 0), 0);
-        await cash.set(user.userId, portfolioId, prior + added);
-      }
+      const csvCash = cashLines.reduce((sum, x) => sum + (x.statementValue ?? 0), 0);
+
+      // One transaction: a failed insert must not leave a replaced portfolio empty.
+      const inserted = await db.transaction(async (tx) => {
+        const txHoldings = holdingsRepo(tx as unknown as Db);
+        const txCash = cashRepo(tx as unknown as Db);
+        if (input.mode === 'replace') {
+          const existing = await txHoldings.list(user.userId, portfolioId);
+          await txHoldings.bulkDelete(
+            user.userId,
+            existing.map((x) => x.id),
+          );
+          // Replace mirrors the statement: cash becomes exactly the CSV's cash lines (0 if none).
+          await txCash.set(user.userId, portfolioId, csvCash);
+        } else if (csvCash) {
+          // Append adds to the balance (re-importing the same file adds its cash again).
+          const prior = (await txCash.get(user.userId, portfolioId)) ?? 0;
+          await txCash.set(user.userId, portfolioId, prior + csvCash);
+        }
+        return (await txHoldings.bulkInsert(user.userId, portfolioId, rows)) ?? [];
+      });
       return { imported: inserted.length, skipped, holdings: inserted.map(holdingDto) };
     },
   };
